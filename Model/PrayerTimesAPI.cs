@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace AdhanyDesktop.Model
 {
-    internal class PrayerTimesAPI
+    public class PrayerTimesAPI
     {
+        public Data Data { get; set; }
     }
 
     public class Data
@@ -29,53 +30,53 @@ namespace AdhanyDesktop.Model
 
     public class Date
     {
-        public string Readable { get; set; }
-        public Hijri Hijri { get; set; }
-        public Gregorian Gregorian { get; set; }
+        public string readable { get; set; }
+        public Hijri hijri { get; set; }
+        public Gregorian gregorian { get; set; }
     }
 
     public class Hijri
     {
-        public string Date { get; set; }
-        public string Format { get; set; }
-        public string Day { get; set; }
-        public Weekday Weekday { get; set; }
-        public Month Month { get; set; }
-        public string Year { get; set; }
+        public string date { get; set; }
+        public string format { get; set; }
+        public string day { get; set; }
+        public Weekday weekday { get; set; }
+        public Month month { get; set; }
+        public string year { get; set; }
     }
 
     public class Weekday
     {
-        public string En { get; set; }
-        public string Ar { get; set; }
+        public string en { get; set; }
+        public string ar { get; set; }
     }
 
     public class Month
     {
-        public int Number { get; set; }
-        public string En { get; set; }
-        public string Ar { get; set; }
+        public int number { get; set; }
+        public string en { get; set; }
+        public string ar { get; set; }
     }
 
     public class Gregorian
     {
-        public string Date { get; set; }
-        public string Format { get; set; }
-        public string Day { get; set; }
-        public GregorianWeekday Weekday { get; set; }
-        public GregorianMonth Month { get; set; }
-        public string GregorianYear { get; set; }
+        public string date { get; set; }
+        public string format { get; set; }
+        public string day { get; set; }
+        public GregorianWeekday weekday { get; set; }
+        public GregorianMonth month { get; set; }
+        public string gregorianYear { get; set; }
     }
 
     public class GregorianWeekday
     {
-        public string En { get; set; }
+        public string en { get; set; }
     }
 
     public class GregorianMonth
     {
-        public int Number { get; set; }
-        public string En { get; set; }
+        public int number { get; set; }
+        public string en { get; set; }
     }
 
 }
