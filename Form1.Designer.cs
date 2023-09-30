@@ -32,14 +32,14 @@
             lbl_settingInfo = new Label();
             groupBox1 = new GroupBox();
             panel4 = new Panel();
-            comboBox3 = new ComboBox();
+            ddl_method = new ComboBox();
             label4 = new Label();
             button1 = new Button();
             panel3 = new Panel();
-            comboBox2 = new ComboBox();
+            ddl_city = new ComboBox();
             label3 = new Label();
             panel2 = new Panel();
-            comboBox1 = new ComboBox();
+            ddl_country = new ComboBox();
             label2 = new Label();
             table_fetchedData = new TableLayoutPanel();
             res_isha = new Label();
@@ -107,7 +107,7 @@
             // 
             // panel4
             // 
-            panel4.Controls.Add(comboBox3);
+            panel4.Controls.Add(ddl_method);
             panel4.Controls.Add(label4);
             panel4.Location = new Point(19, 133);
             panel4.Margin = new Padding(5, 0, 5, 0);
@@ -116,14 +116,14 @@
             panel4.Size = new Size(219, 57);
             panel4.TabIndex = 4;
             // 
-            // comboBox3
+            // ddl_method
             // 
-            comboBox3.Dock = DockStyle.Bottom;
-            comboBox3.FormattingEnabled = true;
-            comboBox3.Location = new Point(0, 24);
-            comboBox3.Name = "comboBox3";
-            comboBox3.Size = new Size(209, 23);
-            comboBox3.TabIndex = 1;
+            ddl_method.Dock = DockStyle.Bottom;
+            ddl_method.FormattingEnabled = true;
+            ddl_method.Location = new Point(0, 24);
+            ddl_method.Name = "ddl_method";
+            ddl_method.Size = new Size(209, 23);
+            ddl_method.TabIndex = 1;
             // 
             // label4
             // 
@@ -148,7 +148,7 @@
             // 
             // panel3
             // 
-            panel3.Controls.Add(comboBox2);
+            panel3.Controls.Add(ddl_city);
             panel3.Controls.Add(label3);
             panel3.Location = new Point(19, 76);
             panel3.Margin = new Padding(5, 0, 5, 0);
@@ -157,14 +157,17 @@
             panel3.Size = new Size(219, 57);
             panel3.TabIndex = 4;
             // 
-            // comboBox2
+            // ddl_city
             // 
-            comboBox2.Dock = DockStyle.Bottom;
-            comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(0, 24);
-            comboBox2.Name = "comboBox2";
-            comboBox2.Size = new Size(209, 23);
-            comboBox2.TabIndex = 1;
+            ddl_city.AutoCompleteMode = AutoCompleteMode.Append;
+            ddl_city.AutoCompleteSource = AutoCompleteSource.ListItems;
+            ddl_city.Dock = DockStyle.Bottom;
+            ddl_city.FormattingEnabled = true;
+            ddl_city.Items.AddRange(new object[] { "Ottawa", "Riyadh" });
+            ddl_city.Location = new Point(0, 24);
+            ddl_city.Name = "ddl_city";
+            ddl_city.Size = new Size(209, 23);
+            ddl_city.TabIndex = 1;
             // 
             // label3
             // 
@@ -179,7 +182,7 @@
             // 
             // panel2
             // 
-            panel2.Controls.Add(comboBox1);
+            panel2.Controls.Add(ddl_country);
             panel2.Controls.Add(label2);
             panel2.Location = new Point(19, 19);
             panel2.Margin = new Padding(5, 0, 5, 0);
@@ -188,14 +191,17 @@
             panel2.Size = new Size(219, 57);
             panel2.TabIndex = 3;
             // 
-            // comboBox1
+            // ddl_country
             // 
-            comboBox1.Dock = DockStyle.Bottom;
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(0, 24);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(209, 23);
-            comboBox1.TabIndex = 1;
+            ddl_country.AutoCompleteMode = AutoCompleteMode.Append;
+            ddl_country.AutoCompleteSource = AutoCompleteSource.ListItems;
+            ddl_country.Dock = DockStyle.Bottom;
+            ddl_country.FormattingEnabled = true;
+            ddl_country.Items.AddRange(new object[] { "Canada", "Saudi Arabia" });
+            ddl_country.Location = new Point(0, 24);
+            ddl_country.Name = "ddl_country";
+            ddl_country.Size = new Size(209, 23);
+            ddl_country.TabIndex = 1;
             // 
             // label2
             // 
@@ -449,9 +455,9 @@
             // statusStrip1
             // 
             statusStrip1.Items.AddRange(new ToolStripItem[] { statusProgressBar, statusLabel });
-            statusStrip1.Location = new Point(0, 297);
+            statusStrip1.Location = new Point(0, 327);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(537, 22);
+            statusStrip1.Size = new Size(534, 22);
             statusStrip1.TabIndex = 2;
             statusStrip1.Text = "statusStrip1";
             // 
@@ -469,12 +475,13 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(537, 319);
+            ClientSize = new Size(534, 349);
             Controls.Add(statusStrip1);
             Controls.Add(table_fetchedData);
             Controls.Add(panel1);
             Name = "Form1";
             Text = "Form1";
+            Load += Form1_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             groupBox1.ResumeLayout(false);
@@ -497,14 +504,14 @@
         private Panel panel1;
         private Label lbl_settingInfo;
         private Panel panel2;
-        private ComboBox comboBox1;
+        private ComboBox ddl_country;
         private Label label2;
         private Button button1;
         private Panel panel4;
-        private ComboBox comboBox3;
+        private ComboBox ddl_method;
         private Label label4;
         private Panel panel3;
-        private ComboBox comboBox2;
+        private ComboBox ddl_city;
         private Label label3;
         private GroupBox groupBox1;
         private TableLayoutPanel table_fetchedData;
