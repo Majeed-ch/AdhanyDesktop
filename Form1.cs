@@ -1,25 +1,10 @@
-﻿namespace AdhanyDesktop
+﻿using AdhanyDesktop.Model;
+
+namespace AdhanyDesktop
 {
     public partial class Form1 : Form
     {
-        private static Dictionary<int, string> methodDictionary = new Dictionary<int, string>
-        {
-            {0, "Shia Ithna-Ansari"},
-            {1, "University of Islamic Sciences, Karachi"},
-            {2, "Islamic Society of North America"},
-            {3, "Muslim World League"},
-            {4, "Umm Al-Qura University, Makkah"},
-            {5, "Egyptian General Authority of Survey"},
-            {7, "Institute of Geophysics, University of Tehran"},
-            {8, "Gulf Region"},
-            {9, "Kuwait"},
-            {10, "Qatar"},
-            {11, "Majlis Ugama Islam Singapura, Singapore"},
-            {12, "Union Organization islamic de France"},
-            {13, "Diyanet İşleri Başkanlığı, Turkey"},
-            {14, "Spiritual Administration of Muslims of Russia"}
-        };
-
+        
         public Form1()
         {
             InitializeComponent();
@@ -39,36 +24,28 @@
             }
 
             res_location.Text = ddl_country.SelectedItem.ToString() + ", " + ddl_city.SelectedItem.ToString();
-            var selectedMethod = (CalculationMethods)ddl_method.SelectedItem;
+            var selectedMethod = (CalculationMethod)ddl_method.SelectedItem;
 
             res_date.Text = selectedMethod.id.ToString();
 
             statusLabel.Text = "Done";
             MessageBox.Show("data fetched successfully!");
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            var methods = new List<CalculationMethods>();
+            var methods = new List<CalculationMethod>();
 
-
-            // Create objects and add them to the methods list
-            foreach (var kvp in methodDictionary)
+            // Create method objects and add them to the methods list
+            foreach (var kvp in CalculationMethod.methodDictionary)
             {
-                methods.Add(new CalculationMethods { id = kvp.Key, name = kvp.Value });
+                methods.Add(new CalculationMethod { id = kvp.Key, name = kvp.Value });
             }
 
             // Bind the list to the combo box
             ddl_method.DataSource = methods;
             ddl_method.DisplayMember = "name";
             ddl_method.ValueMember = "id";
-        }
-
-        public class CalculationMethods
-        {
-            public int id { get; set; }
-            public string name { get; set; }
         }
     }
 }
