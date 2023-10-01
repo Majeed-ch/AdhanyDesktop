@@ -9,6 +9,13 @@ namespace AdhanyDesktop.Model
     public class PrayerTimesAPI
     {
         public Data Data { get; set; }
+        public Location Location { get; set; }
+    }
+
+    public class Location
+    {
+        public string Country { get; set; }
+        public string City { get; set; }
     }
 
     public class Data

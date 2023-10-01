@@ -3,6 +3,7 @@ using System.Diagnostics.Metrics;
 using System.IO;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text.Json;
 using static AdhanyDesktop.Model.PrayerTimesAPI;
 
 namespace AdhanyDesktop
@@ -58,10 +59,9 @@ namespace AdhanyDesktop
 
                 // Populate the table with the prayer times
                 statusProgressBar.Value = 50;
-                res_location.Text = Properties.Settings.Default.City + ", " + Properties.Settings.Default.Country;
                 displayPrayerTimes(prayerTimes);
-                statusProgressBar.Value = 100;
 
+                statusProgressBar.Value = 100;
                 statusLabel.Text = "Prayer times from saved settings";
             }
             else
@@ -116,13 +116,29 @@ namespace AdhanyDesktop
             PrayerTimesAPI prayerTimes = null;
             var uri = string.Format(timingsUri, city, country, method);
 
+            if (File.Exists("savedPrayerTimes.json"))
+            {
+                var savedPrayerTimes = await File.ReadAllTextAsync("savedPrayerTimes.json");
+                prayerTimes = JsonSerializer.Deserialize<PrayerTimesAPI>(savedPrayerTimes);
+
+                var formattedDate = prayerTimes.Data.Date.gregorian.date;
+
+                bool isSameDate = formattedDate == DateTime.Now.ToString("dd-MM-yyyy");
+                bool isSameCity = prayerTimes?.Location.City == city;
+                bool isSameCountry = prayerTimes?.Location.Country == country;
+
+                if (isSameDate && isSameCity && isSameCountry)
+                    return prayerTimes;
+            }
+
             var request = new HttpRequestMessage(HttpMethod.Get, uri);
             var response = await httpClient.SendAsync(request);
-
             try
             {
                 response.EnsureSuccessStatusCode();
                 prayerTimes = await response.Content.ReadFromJsonAsync<PrayerTimesAPI>();
+                prayerTimes.Location = new Location { City = city, Country = country };
+                saveToLocalFile(prayerTimes);
             }
             catch (Exception e)
             {
@@ -131,12 +147,24 @@ namespace AdhanyDesktop
             return prayerTimes;
         }
 
+        private void saveToLocalFile(PrayerTimesAPI prayerTimes)
+        {
+            var json = JsonSerializer.Serialize(prayerTimes);
+            File.WriteAllText("savedPrayerTimes.json", json);
+        }
+        private void deleteLocalFile()
+        {
+            if (File.Exists("savedPrayerTimes.json"))
+                File.Delete("savedPrayerTimes.json");
+        }
+
         /// <summary>
         /// This is called to display the prayer times in the table from the PrayerTimesAPI object
         /// </summary>
         /// <param name="prayerTimes">The PrayerTimesAPI object to display</param>
         private void displayPrayerTimes(PrayerTimesAPI prayerTimes)
         {
+            res_location.Text = prayerTimes.Location.City + ", " + prayerTimes.Location.Country;
             res_date.Text = prayerTimes.Data.Date.readable;
             res_hijri.Text = prayerTimes.Data.Date.hijri.date;
             res_fajr.Text = prayerTimes.Data.Timings.Fajr;
@@ -152,9 +180,13 @@ namespace AdhanyDesktop
         private void resetSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Properties.Settings.Default.Reset();
+            table_fetchedData.Visible = false;
             ddl_country.Text = String.Empty;
             ddl_city.Text = String.Empty;
             ddl_method.Text = String.Empty;
+            deleteLocalFile();
+            statusLabel.Text = "";
+            statusProgressBar.Value = 0;
             MessageBox.Show("Settings reset successfully");
         }
 
