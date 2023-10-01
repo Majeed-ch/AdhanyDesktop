@@ -1,4 +1,5 @@
 ﻿using AdhanyDesktop.Model;
+using System;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -9,7 +10,7 @@ namespace AdhanyDesktop.Services
     public class Service
     {
         private static HttpClient httpClient;
-        private static string timingsUri = "http://api.aladhan.com/v1/timingsByCity?city={0}&country={1}&method={2}";
+        private static string timingsUri = "http://api.aladhan.com/v1/timingsByCity";
 
         public Service(HttpClient client)
         {
@@ -32,8 +33,11 @@ namespace AdhanyDesktop.Services
         public async Task<PrayerTimesAPI> GetPrayerTimesAsync(string country, string city, int method)
         {
             PrayerTimesAPI prayerTimes = null;
-            var uri = string.Format(timingsUri, city, country, method);
+            string uri = method == 100 ? 
+                timingsUri + $"?city={city}&country={country}" :
+                timingsUri + $"?city={city}&country={country}&method={method}";
 
+            // Check if the data has been fetched recently and saved to a local file
             if (File.Exists("savedPrayerTimes.json"))
             {
                 var savedPrayerTimes = await File.ReadAllTextAsync("savedPrayerTimes.json");

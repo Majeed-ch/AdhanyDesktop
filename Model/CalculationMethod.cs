@@ -10,6 +10,7 @@ namespace AdhanyDesktop.Model
     {
         public static Dictionary<int, string> methodDictionary = new Dictionary<int, string>
         {
+            {100, "Auto calculation based on City" },
             {0, "Shia Ithna-Ansari"},
             {1, "University of Islamic Sciences, Karachi"},
             {2, "Islamic Society of North America"},
