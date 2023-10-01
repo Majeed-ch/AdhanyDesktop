@@ -1,32 +1,23 @@
 ﻿using AdhanyDesktop.Model;
-using System.Diagnostics.Metrics;
-using System.IO;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Text.Json;
-using static AdhanyDesktop.Model.PrayerTimesAPI;
+using AdhanyDesktop.Services;
 
 namespace AdhanyDesktop
 {
     public partial class Form1 : Form
     {
-        private static HttpClient httpClient;
-        private static string timingsUri = "http://api.aladhan.com/v1/timingsByCity?city={0}&country={1}&method={2}";
+        private static Service _service;
 
         public Form1()
         {
             InitializeComponent();
-            httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri("http://api.aladhan.com/v1/");
-            httpClient.DefaultRequestHeaders.Accept.Clear();
-            httpClient.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-
+            _service = new Service(new HttpClient());
         }
 
         /* 
          * This method is called when the form is loaded.
-         * Populates the method combo box with the available methods.
+         * Populates the method combo box with the available methods 
+         * and displays the prayer times from the saved settings if they exist.
          */
         private async void Form1_Load(object sender, EventArgs e)
         {
@@ -52,7 +43,7 @@ namespace AdhanyDesktop
 
                 statusProgressBar.Value = 25;
                 // get the prayer times for these settings
-                PrayerTimesAPI prayerTimes = await GetPrayerTimesAsync(
+                PrayerTimesAPI prayerTimes = await _service.GetPrayerTimesAsync(
                     Properties.Settings.Default.Country,
                     Properties.Settings.Default.City,
                     Properties.Settings.Default.Method);
@@ -89,7 +80,7 @@ namespace AdhanyDesktop
             Properties.Settings.Default.Save();
 
             statusProgressBar.Value = 50;
-            PrayerTimesAPI prayerTimes = await GetPrayerTimesAsync(country, city, method.id);
+            PrayerTimesAPI prayerTimes = await _service.GetPrayerTimesAsync(country, city, method.id);
 
             statusProgressBar.Value = 75;
             res_location.Text = city + ", " + country;
@@ -99,63 +90,6 @@ namespace AdhanyDesktop
             statusProgressBar.Value = 100;
             statusLabel.Text = "Done";
             MessageBox.Show("Prayer times fetched successfully");
-        }
-
-
-        /// <summary>
-        /// This fetches the prayer times from the API using the given parameters, and returns a PrayerTimesAPI object.
-        /// If the data has been fetched recently, it will be returned from the cache.
-        /// the method parameter is the calculation method index number <see cref="https://aladhan.com/calculation-methods"/>
-        /// </summary>
-        /// <param name="country">Country Name or Code</param>
-        /// <param name="city">City Name</param>
-        /// <param name="method">The Method index number</param>
-        /// <returns></returns>
-        private async Task<PrayerTimesAPI> GetPrayerTimesAsync(string country, string city, int method)
-        {
-            PrayerTimesAPI prayerTimes = null;
-            var uri = string.Format(timingsUri, city, country, method);
-
-            if (File.Exists("savedPrayerTimes.json"))
-            {
-                var savedPrayerTimes = await File.ReadAllTextAsync("savedPrayerTimes.json");
-                prayerTimes = JsonSerializer.Deserialize<PrayerTimesAPI>(savedPrayerTimes);
-
-                var formattedDate = prayerTimes.Data.Date.gregorian.date;
-
-                bool isSameDate = formattedDate == DateTime.Now.ToString("dd-MM-yyyy");
-                bool isSameCity = prayerTimes?.Location.City == city;
-                bool isSameCountry = prayerTimes?.Location.Country == country;
-
-                if (isSameDate && isSameCity && isSameCountry)
-                    return prayerTimes;
-            }
-
-            var request = new HttpRequestMessage(HttpMethod.Get, uri);
-            var response = await httpClient.SendAsync(request);
-            try
-            {
-                response.EnsureSuccessStatusCode();
-                prayerTimes = await response.Content.ReadFromJsonAsync<PrayerTimesAPI>();
-                prayerTimes.Location = new Location { City = city, Country = country };
-                saveToLocalFile(prayerTimes);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return prayerTimes;
-        }
-
-        private void saveToLocalFile(PrayerTimesAPI prayerTimes)
-        {
-            var json = JsonSerializer.Serialize(prayerTimes);
-            File.WriteAllText("savedPrayerTimes.json", json);
-        }
-        private void deleteLocalFile()
-        {
-            if (File.Exists("savedPrayerTimes.json"))
-                File.Delete("savedPrayerTimes.json");
         }
 
         /// <summary>
@@ -184,7 +118,7 @@ namespace AdhanyDesktop
             ddl_country.Text = String.Empty;
             ddl_city.Text = String.Empty;
             ddl_method.Text = String.Empty;
-            deleteLocalFile();
+            _service.deleteLocalFile();
             statusLabel.Text = "";
             statusProgressBar.Value = 0;
             MessageBox.Show("Settings reset successfully");
