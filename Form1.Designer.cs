@@ -34,7 +34,7 @@
             panel4 = new Panel();
             ddl_method = new ComboBox();
             label4 = new Label();
-            button1 = new Button();
+            btn_save = new Button();
             panel3 = new Panel();
             ddl_city = new ComboBox();
             label3 = new Label();
@@ -64,6 +64,9 @@
             statusStrip1 = new StatusStrip();
             statusProgressBar = new ToolStripProgressBar();
             statusLabel = new ToolStripStatusLabel();
+            menuStrip1 = new MenuStrip();
+            resetSettingsToolStripMenuItem = new ToolStripMenuItem();
+            exitToolStripMenuItem = new ToolStripMenuItem();
             panel1.SuspendLayout();
             groupBox1.SuspendLayout();
             panel4.SuspendLayout();
@@ -71,13 +74,14 @@
             panel2.SuspendLayout();
             table_fetchedData.SuspendLayout();
             statusStrip1.SuspendLayout();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
             // 
             panel1.Controls.Add(lbl_settingInfo);
             panel1.Controls.Add(groupBox1);
-            panel1.Location = new Point(12, 12);
+            panel1.Location = new Point(12, 38);
             panel1.Name = "panel1";
             panel1.Padding = new Padding(15, 0, 15, 15);
             panel1.Size = new Size(256, 303);
@@ -96,7 +100,7 @@
             // groupBox1
             // 
             groupBox1.Controls.Add(panel4);
-            groupBox1.Controls.Add(button1);
+            groupBox1.Controls.Add(btn_save);
             groupBox1.Controls.Add(panel3);
             groupBox1.Controls.Add(panel2);
             groupBox1.Location = new Point(0, 45);
@@ -136,15 +140,15 @@
             label4.TabIndex = 0;
             label4.Text = "Method of calculation";
             // 
-            // button1
+            // btn_save
             // 
-            button1.Location = new Point(19, 208);
-            button1.Name = "button1";
-            button1.Size = new Size(79, 28);
-            button1.TabIndex = 5;
-            button1.Text = "Save";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            btn_save.Location = new Point(19, 208);
+            btn_save.Name = "btn_save";
+            btn_save.Size = new Size(79, 28);
+            btn_save.TabIndex = 5;
+            btn_save.Text = "Save";
+            btn_save.UseVisualStyleBackColor = true;
+            btn_save.Click += btn_save_Click;
             // 
             // panel3
             // 
@@ -240,7 +244,7 @@
             table_fetchedData.Controls.Add(lbl_isha, 0, 9);
             table_fetchedData.Controls.Add(label8, 0, 3);
             table_fetchedData.Controls.Add(res_location, 1, 0);
-            table_fetchedData.Location = new Point(309, 0);
+            table_fetchedData.Location = new Point(305, 38);
             table_fetchedData.Name = "table_fetchedData";
             table_fetchedData.Padding = new Padding(10);
             table_fetchedData.RowCount = 10;
@@ -254,7 +258,7 @@
             table_fetchedData.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
             table_fetchedData.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
             table_fetchedData.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            table_fetchedData.Size = new Size(217, 319);
+            table_fetchedData.Size = new Size(217, 303);
             table_fetchedData.TabIndex = 1;
             table_fetchedData.Visible = false;
             // 
@@ -262,9 +266,9 @@
             // 
             res_isha.AutoSize = true;
             res_isha.Dock = DockStyle.Fill;
-            res_isha.Location = new Point(75, 271);
+            res_isha.Location = new Point(75, 262);
             res_isha.Name = "res_isha";
-            res_isha.Size = new Size(129, 38);
+            res_isha.Size = new Size(129, 31);
             res_isha.TabIndex = 19;
             res_isha.Text = "label13";
             // 
@@ -272,9 +276,9 @@
             // 
             res_maghrib.AutoSize = true;
             res_maghrib.Dock = DockStyle.Fill;
-            res_maghrib.Location = new Point(75, 242);
+            res_maghrib.Location = new Point(75, 234);
             res_maghrib.Name = "res_maghrib";
-            res_maghrib.Size = new Size(129, 29);
+            res_maghrib.Size = new Size(129, 28);
             res_maghrib.TabIndex = 18;
             res_maghrib.Text = "label12";
             // 
@@ -282,9 +286,9 @@
             // 
             res_asir.AutoSize = true;
             res_asir.Dock = DockStyle.Fill;
-            res_asir.Location = new Point(75, 213);
+            res_asir.Location = new Point(75, 206);
             res_asir.Name = "res_asir";
-            res_asir.Size = new Size(129, 29);
+            res_asir.Size = new Size(129, 28);
             res_asir.TabIndex = 17;
             res_asir.Text = "label11";
             // 
@@ -292,9 +296,9 @@
             // 
             res_dhuhr.AutoSize = true;
             res_dhuhr.Dock = DockStyle.Fill;
-            res_dhuhr.Location = new Point(75, 184);
+            res_dhuhr.Location = new Point(75, 178);
             res_dhuhr.Name = "res_dhuhr";
-            res_dhuhr.Size = new Size(129, 29);
+            res_dhuhr.Size = new Size(129, 28);
             res_dhuhr.TabIndex = 16;
             res_dhuhr.Text = "label10";
             // 
@@ -302,9 +306,9 @@
             // 
             res_sunrise.AutoSize = true;
             res_sunrise.Dock = DockStyle.Fill;
-            res_sunrise.Location = new Point(75, 155);
+            res_sunrise.Location = new Point(75, 150);
             res_sunrise.Name = "res_sunrise";
-            res_sunrise.Size = new Size(129, 29);
+            res_sunrise.Size = new Size(129, 28);
             res_sunrise.TabIndex = 15;
             res_sunrise.Text = "label9";
             // 
@@ -312,9 +316,9 @@
             // 
             res_fajr.AutoSize = true;
             res_fajr.Dock = DockStyle.Fill;
-            res_fajr.Location = new Point(75, 126);
+            res_fajr.Location = new Point(75, 122);
             res_fajr.Name = "res_fajr";
-            res_fajr.Size = new Size(129, 29);
+            res_fajr.Size = new Size(129, 28);
             res_fajr.TabIndex = 14;
             res_fajr.Text = "label7";
             // 
@@ -322,9 +326,9 @@
             // 
             res_hijri.AutoSize = true;
             res_hijri.Dock = DockStyle.Fill;
-            res_hijri.Location = new Point(75, 68);
+            res_hijri.Location = new Point(75, 66);
             res_hijri.Name = "res_hijri";
-            res_hijri.Size = new Size(129, 29);
+            res_hijri.Size = new Size(129, 28);
             res_hijri.TabIndex = 13;
             res_hijri.Text = "label6";
             // 
@@ -332,9 +336,9 @@
             // 
             res_date.AutoSize = true;
             res_date.Dock = DockStyle.Fill;
-            res_date.Location = new Point(75, 39);
+            res_date.Location = new Point(75, 38);
             res_date.Name = "res_date";
-            res_date.Size = new Size(129, 29);
+            res_date.Size = new Size(129, 28);
             res_date.TabIndex = 12;
             res_date.Text = "label5";
             // 
@@ -344,7 +348,7 @@
             lbl_location.AutoSize = true;
             lbl_location.Location = new Point(13, 10);
             lbl_location.Name = "lbl_location";
-            lbl_location.Size = new Size(56, 29);
+            lbl_location.Size = new Size(56, 28);
             lbl_location.TabIndex = 0;
             lbl_location.Text = "Location:";
             // 
@@ -352,9 +356,9 @@
             // 
             lbl_date.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lbl_date.AutoSize = true;
-            lbl_date.Location = new Point(13, 39);
+            lbl_date.Location = new Point(13, 38);
             lbl_date.Name = "lbl_date";
-            lbl_date.Size = new Size(56, 29);
+            lbl_date.Size = new Size(56, 28);
             lbl_date.TabIndex = 1;
             lbl_date.Text = "Date:";
             // 
@@ -363,9 +367,9 @@
             lbl_hijri.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lbl_hijri.AutoSize = true;
             lbl_hijri.FlatStyle = FlatStyle.System;
-            lbl_hijri.Location = new Point(13, 68);
+            lbl_hijri.Location = new Point(13, 66);
             lbl_hijri.Name = "lbl_hijri";
-            lbl_hijri.Size = new Size(56, 29);
+            lbl_hijri.Size = new Size(56, 28);
             lbl_hijri.TabIndex = 2;
             lbl_hijri.Text = "Hijri:";
             // 
@@ -373,9 +377,9 @@
             // 
             lbl_fajr.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lbl_fajr.AutoSize = true;
-            lbl_fajr.Location = new Point(13, 126);
+            lbl_fajr.Location = new Point(13, 122);
             lbl_fajr.Name = "lbl_fajr";
-            lbl_fajr.Size = new Size(56, 29);
+            lbl_fajr.Size = new Size(56, 28);
             lbl_fajr.TabIndex = 4;
             lbl_fajr.Text = "Fajr:";
             // 
@@ -383,9 +387,9 @@
             // 
             lbl_sunrise.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lbl_sunrise.AutoSize = true;
-            lbl_sunrise.Location = new Point(13, 155);
+            lbl_sunrise.Location = new Point(13, 150);
             lbl_sunrise.Name = "lbl_sunrise";
-            lbl_sunrise.Size = new Size(56, 29);
+            lbl_sunrise.Size = new Size(56, 28);
             lbl_sunrise.TabIndex = 5;
             lbl_sunrise.Text = "Sunrise:";
             // 
@@ -393,9 +397,9 @@
             // 
             lbl_dhuhr.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lbl_dhuhr.AutoSize = true;
-            lbl_dhuhr.Location = new Point(13, 184);
+            lbl_dhuhr.Location = new Point(13, 178);
             lbl_dhuhr.Name = "lbl_dhuhr";
-            lbl_dhuhr.Size = new Size(56, 29);
+            lbl_dhuhr.Size = new Size(56, 28);
             lbl_dhuhr.TabIndex = 6;
             lbl_dhuhr.Text = "Dhuhr:";
             // 
@@ -403,9 +407,9 @@
             // 
             lbl_asir.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lbl_asir.AutoSize = true;
-            lbl_asir.Location = new Point(13, 213);
+            lbl_asir.Location = new Point(13, 206);
             lbl_asir.Name = "lbl_asir";
-            lbl_asir.Size = new Size(56, 29);
+            lbl_asir.Size = new Size(56, 28);
             lbl_asir.TabIndex = 7;
             lbl_asir.Text = "Asir:";
             // 
@@ -413,9 +417,9 @@
             // 
             lbl_mahgrib.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lbl_mahgrib.AutoSize = true;
-            lbl_mahgrib.Location = new Point(13, 242);
+            lbl_mahgrib.Location = new Point(13, 234);
             lbl_mahgrib.Name = "lbl_mahgrib";
-            lbl_mahgrib.Size = new Size(56, 29);
+            lbl_mahgrib.Size = new Size(56, 28);
             lbl_mahgrib.TabIndex = 8;
             lbl_mahgrib.Text = "Maghrib:";
             // 
@@ -423,9 +427,9 @@
             // 
             lbl_isha.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lbl_isha.AutoSize = true;
-            lbl_isha.Location = new Point(13, 271);
+            lbl_isha.Location = new Point(13, 262);
             lbl_isha.Name = "lbl_isha";
-            lbl_isha.Size = new Size(56, 38);
+            lbl_isha.Size = new Size(56, 31);
             lbl_isha.TabIndex = 9;
             lbl_isha.Text = "Isha:";
             // 
@@ -435,9 +439,9 @@
             label8.BackColor = Color.LightGray;
             table_fetchedData.SetColumnSpan(label8, 2);
             label8.Dock = DockStyle.Fill;
-            label8.Location = new Point(13, 97);
+            label8.Location = new Point(13, 94);
             label8.Name = "label8";
-            label8.Size = new Size(191, 29);
+            label8.Size = new Size(191, 28);
             label8.TabIndex = 10;
             label8.Text = "Prayer Times";
             label8.TextAlign = ContentAlignment.MiddleCenter;
@@ -448,14 +452,14 @@
             res_location.Dock = DockStyle.Fill;
             res_location.Location = new Point(75, 10);
             res_location.Name = "res_location";
-            res_location.Size = new Size(129, 29);
+            res_location.Size = new Size(129, 28);
             res_location.TabIndex = 11;
             res_location.Text = "label1";
             // 
             // statusStrip1
             // 
             statusStrip1.Items.AddRange(new ToolStripItem[] { statusProgressBar, statusLabel });
-            statusStrip1.Location = new Point(0, 327);
+            statusStrip1.Location = new Point(0, 348);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Size = new Size(534, 22);
             statusStrip1.TabIndex = 2;
@@ -471,14 +475,40 @@
             statusLabel.Name = "statusLabel";
             statusLabel.Size = new Size(0, 17);
             // 
+            // menuStrip1
+            // 
+            menuStrip1.BackColor = SystemColors.ControlLight;
+            menuStrip1.Items.AddRange(new ToolStripItem[] { resetSettingsToolStripMenuItem, exitToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(534, 24);
+            menuStrip1.TabIndex = 3;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // resetSettingsToolStripMenuItem
+            // 
+            resetSettingsToolStripMenuItem.Name = "resetSettingsToolStripMenuItem";
+            resetSettingsToolStripMenuItem.Size = new Size(92, 20);
+            resetSettingsToolStripMenuItem.Text = "&Reset Settings";
+            resetSettingsToolStripMenuItem.Click += resetSettingsToolStripMenuItem_Click;
+            // 
+            // exitToolStripMenuItem
+            // 
+            exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            exitToolStripMenuItem.Size = new Size(38, 20);
+            exitToolStripMenuItem.Text = "E&xit";
+            exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(534, 349);
+            ClientSize = new Size(534, 370);
             Controls.Add(statusStrip1);
+            Controls.Add(menuStrip1);
             Controls.Add(table_fetchedData);
             Controls.Add(panel1);
+            MainMenuStrip = menuStrip1;
             Name = "Form1";
             Text = "Form1";
             Load += Form1_Load;
@@ -495,6 +525,8 @@
             table_fetchedData.PerformLayout();
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -506,7 +538,7 @@
         private Panel panel2;
         private ComboBox ddl_country;
         private Label label2;
-        private Button button1;
+        private Button btn_save;
         private Panel panel4;
         private ComboBox ddl_method;
         private Label label4;
@@ -537,5 +569,8 @@
         private StatusStrip statusStrip1;
         private ToolStripProgressBar statusProgressBar;
         private ToolStripStatusLabel statusLabel;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem resetSettingsToolStripMenuItem;
+        private ToolStripMenuItem exitToolStripMenuItem;
     }
 }
