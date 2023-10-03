@@ -1,5 +1,7 @@
 ﻿using AdhanyDesktop.Model;
 using AdhanyDesktop.Services;
+using System.ComponentModel;
+using System.Media;
 using Timer = System.Threading.Timer;
 
 namespace AdhanyDesktop
@@ -7,18 +9,20 @@ namespace AdhanyDesktop
     public partial class Form1 : Form
     {
 
-        private Service _service;
-        static Timer timer;
+        private readonly Service _service;
+        private readonly Timer timer;
         private PrayerTimesAPI prayerTimes;
+        private readonly SoundPlayer SoundPlayer = new();
 
         public Form1()
         {
             InitializeComponent();
+            
             _service = new Service(new HttpClient());
-            // init a System.Threading.Timer
+            SoundPlayer.LoadCompleted += new AsyncCompletedEventHandler(SoundPlayer_LoadCompleted);
 
             timer = new Timer(
-                new TimerCallback(notifyPrayerTime),
+                new TimerCallback(NotifyPrayerTime),
                 null,
                 TimeSpan.FromSeconds(30),
                 TimeSpan.FromSeconds(10));
@@ -31,8 +35,8 @@ namespace AdhanyDesktop
          */
         private void Form1_Load(object sender, EventArgs e)
         {
-            bindMethodBox();
-            loadFromSettings();
+            BindMethodBox();
+            LoadFromSettings();
         }
 
         /// <summary>
@@ -40,7 +44,7 @@ namespace AdhanyDesktop
         /// and show a notification if it is.
         /// </summary>
         /// <param name="state"></param>
-        private void notifyPrayerTime(object state)
+        private void NotifyPrayerTime(object state)
         {
             Dictionary<string, string> schedualedTimes = new Dictionary<string, string>();
             if (prayerTimes != null)
@@ -58,9 +62,24 @@ namespace AdhanyDesktop
             {
                 if (time.Value == currentTime)
                 {
-                    showNotification(time.Key);
+                    ShowNotification(time.Key);
+                    LoadSoundAsync();
                     break;
                 }
+            }
+        }
+
+        private void LoadSoundAsync()
+        {
+            try
+            {
+                SoundPlayer.SoundLocation = @"C:\ASP_Projects\AdhanyDesktop\Audio\Adhan_Al_Deghreri.wav";
+                SoundPlayer.LoadAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error occurred loading the Adhan\n" +
+                    "We will try again next prayer time", "Warning");
             }
         }
 
@@ -68,7 +87,7 @@ namespace AdhanyDesktop
         /// This is called to show a notification with the prayer name
         /// </summary>
         /// <param name="prayerName"></param>
-        private void showNotification(string prayerName)
+        private void ShowNotification(string prayerName)
         {
 
             notifyIcon.BalloonTipIcon = ToolTipIcon.Info;
@@ -78,10 +97,25 @@ namespace AdhanyDesktop
             notifyIcon.ShowBalloonTip(2000);
         }
 
+        private void SoundPlayer_LoadCompleted(object? sender, AsyncCompletedEventArgs e)
+        {
+            if (SoundPlayer.IsLoadCompleted)
+            {
+                try
+                {
+                    SoundPlayer.Play();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error occurred playing the Adhan", "Warning");
+                }
+            }
+        }
+
         /// <summary>
         /// Checks for saved settings and displays the prayer times if they exist
         /// </summary>
-        private async void loadFromSettings()
+        private async void LoadFromSettings()
         {
             bool settingsExist = Properties.Settings.Default.Country != String.Empty
                 && Properties.Settings.Default.City != String.Empty;
@@ -102,7 +136,7 @@ namespace AdhanyDesktop
 
                 // Populate the table with the prayer times
                 statusProgressBar.Value = 50;
-                displayPrayerTimes(prayerTimes);
+                DisplayPrayerTimes(prayerTimes);
 
                 statusProgressBar.Value = 100;
                 statusLabel.Text = "Prayer times from saved settings";
@@ -117,7 +151,7 @@ namespace AdhanyDesktop
         /// <summary>
         /// This is called to populate the method combo box with the available methods
         /// </summary>
-        private void bindMethodBox()
+        private void BindMethodBox()
         {
             var methods = new List<CalculationMethod>();
 
@@ -154,7 +188,7 @@ namespace AdhanyDesktop
 
             statusProgressBar.Value = 75;
             res_location.Text = city + ", " + country;
-            displayPrayerTimes(prayerTimes);
+            DisplayPrayerTimes(prayerTimes);
 
 
             statusProgressBar.Value = 100;
@@ -166,7 +200,7 @@ namespace AdhanyDesktop
         /// This is called to display the prayer times in the table from the PrayerTimesAPI object
         /// </summary>
         /// <param name="prayerTimes">The PrayerTimesAPI object to display</param>
-        private void displayPrayerTimes(PrayerTimesAPI prayerTimes)
+        private void DisplayPrayerTimes(PrayerTimesAPI prayerTimes)
         {
             res_location.Text = prayerTimes.Location.City + ", " + prayerTimes.Location.Country;
             res_date.Text = prayerTimes.Data.Date.readable;
@@ -210,7 +244,7 @@ namespace AdhanyDesktop
             if (result == DialogResult.Yes)
             {
                 // will need to stop playing the adhan sound
-
+                SoundPlayer.Stop();
             }
         }
     }
