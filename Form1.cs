@@ -17,15 +17,15 @@ namespace AdhanyDesktop
         public Form1()
         {
             InitializeComponent();
-            
+
             _service = new Service(new HttpClient());
             SoundPlayer.LoadCompleted += new AsyncCompletedEventHandler(SoundPlayer_LoadCompleted);
 
             timer = new Timer(
                 new TimerCallback(NotifyPrayerTime),
                 null,
-                TimeSpan.FromSeconds(30),
-                TimeSpan.FromSeconds(10));
+                TimeSpan.FromSeconds(10),
+                TimeSpan.FromSeconds(30));
         }
 
         /* 
@@ -73,7 +73,7 @@ namespace AdhanyDesktop
         {
             try
             {
-                SoundPlayer.SoundLocation = @"C:\ASP_Projects\AdhanyDesktop\Audio\Adhan_Al_Deghreri.wav";
+                SoundPlayer.SoundLocation = @"C:\ASP_Projects\AdhanyDesktop\Audio\Takbeer_Mishari.wav";
                 SoundPlayer.LoadAsync();
             }
             catch (Exception ex)
@@ -235,7 +235,7 @@ namespace AdhanyDesktop
 
         private void notifyIcon_BalloonTipClicked(object sender, EventArgs e)
         {
-            string message = "Do you want to stop the athan?";
+            string message = "Do you want to stop the Adhan?";
             string caption = "Adhan";
             MessageBoxButtons buttons = MessageBoxButtons.YesNo;
             DialogResult result;
