@@ -21,22 +21,19 @@ namespace AdhanyDesktop
          */
         private async void Form1_Load(object sender, EventArgs e)
         {
-            var methods = new List<CalculationMethod>();
+            bindMethodBox();
 
-            // Create method objects and add them to the methods list
-            foreach (var kvp in CalculationMethod.methodDictionary)
-            {
-                methods.Add(new CalculationMethod { id = kvp.Key, name = kvp.Value });
-            }
-            // Bind the list to the combo box
-            ddl_method.DataSource = methods;
-            ddl_method.DisplayMember = "name";
-            ddl_method.ValueMember = "id";
+            bool settingsExist = Properties.Settings.Default.Country != String.Empty
+                && Properties.Settings.Default.City != String.Empty;
+            
+            loadFromSettings(settingsExist);
+        }
 
-            // Check for saved settings
-            if (!String.IsNullOrEmpty(Properties.Settings.Default.Country) || !String.IsNullOrEmpty(Properties.Settings.Default.City))
+        private async void loadFromSettings(bool settingsExist)
+        {
+            if (settingsExist)
             {
-                // populate the combo boxes
+                // populate the combo box values from the saved settings
                 ddl_country.SelectedItem = Properties.Settings.Default.Country;
                 ddl_city.SelectedItem = Properties.Settings.Default.City;
                 ddl_method.SelectedValue = Properties.Settings.Default.Method;
@@ -60,6 +57,21 @@ namespace AdhanyDesktop
                 statusLabel.Text = "Please select a country and city";
 
             }
+        }
+
+        private void bindMethodBox()
+        {
+            var methods = new List<CalculationMethod>();
+
+            // Create method objects and add them to the methods list
+            foreach (var kvp in CalculationMethod.methodDictionary)
+            {
+                methods.Add(new CalculationMethod { id = kvp.Key, name = kvp.Value });
+            }
+            // Bind the list to the combo box
+            ddl_method.DataSource = methods;
+            ddl_method.DisplayMember = "name";
+            ddl_method.ValueMember = "id";
         }
 
         private async void btn_save_Click(object sender, EventArgs e)
