@@ -24,6 +24,22 @@ namespace AdhanyDesktop
                 TimeSpan.FromSeconds(10));
         }
 
+        /* 
+         * This method is called when the form is loaded.
+         * Populates the method combo box with the available methods 
+         * and displays the prayer times from the saved settings if they exist.
+         */
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            bindMethodBox();
+            loadFromSettings();
+        }
+
+        /// <summary>
+        /// This is called by the timer to check if it's time for a prayer
+        /// and show a notification if it is.
+        /// </summary>
+        /// <param name="state"></param>
         private void notifyPrayerTime(object state)
         {
             Dictionary<string, string> schedualedTimes = new Dictionary<string, string>();
@@ -42,22 +58,24 @@ namespace AdhanyDesktop
             {
                 if (time.Value == currentTime)
                 {
-                    MessageBox.Show($"It's {time.Key} prayer time!");
+                    showNotification(time.Key);
+                    break;
                 }
             }
         }
 
-        /* 
-         * This method is called when the form is loaded.
-         * Populates the method combo box with the available methods 
-         * and displays the prayer times from the saved settings if they exist.
-         */
-        private async void Form1_Load(object sender, EventArgs e)
+        /// <summary>
+        /// This is called to show a notification with the prayer name
+        /// </summary>
+        /// <param name="prayerName"></param>
+        private void showNotification(string prayerName)
         {
-            bindMethodBox();
-            loadFromSettings();
 
-
+            notifyIcon.BalloonTipIcon = ToolTipIcon.Info;
+            notifyIcon.Icon = SystemIcons.Information;
+            notifyIcon.BalloonTipText = $"It's {prayerName} time";
+            notifyIcon.Visible = true;
+            notifyIcon.ShowBalloonTip(2000);
         }
 
         /// <summary>
@@ -96,6 +114,9 @@ namespace AdhanyDesktop
             }
         }
 
+        /// <summary>
+        /// This is called to populate the method combo box with the available methods
+        /// </summary>
         private void bindMethodBox()
         {
             var methods = new List<CalculationMethod>();
@@ -176,6 +197,21 @@ namespace AdhanyDesktop
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void notifyIcon_BalloonTipClicked(object sender, EventArgs e)
+        {
+            string message = "Do you want to stop the athan?";
+            string caption = "Adhan";
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            DialogResult result;
+            result = MessageBox.Show(message, caption, buttons);
+
+            if (result == DialogResult.Yes)
+            {
+                // will need to stop playing the adhan sound
+
+            }
         }
     }
 }
