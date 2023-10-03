@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             panel1 = new Panel();
             lbl_settingInfo = new Label();
             groupBox1 = new GroupBox();
@@ -67,6 +68,7 @@
             menuStrip1 = new MenuStrip();
             resetSettingsToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
+            notifyIcon = new NotifyIcon(components);
             panel1.SuspendLayout();
             groupBox1.SuspendLayout();
             panel4.SuspendLayout();
@@ -499,6 +501,13 @@
             exitToolStripMenuItem.Text = "E&xit";
             exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
             // 
+            // notifyIcon
+            // 
+            notifyIcon.BalloonTipIcon = ToolTipIcon.Info;
+            notifyIcon.BalloonTipTitle = "Adhan";
+            notifyIcon.Visible = true;
+            notifyIcon.BalloonTipClicked += notifyIcon_BalloonTipClicked;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -572,5 +581,6 @@
         private MenuStrip menuStrip1;
         private ToolStripMenuItem resetSettingsToolStripMenuItem;
         private ToolStripMenuItem exitToolStripMenuItem;
+        private NotifyIcon notifyIcon;
     }
 }
