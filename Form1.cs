@@ -1,17 +1,50 @@
 ﻿using AdhanyDesktop.Model;
-using System.Net.Http.Headers;
 using AdhanyDesktop.Services;
+using Timer = System.Threading.Timer;
 
 namespace AdhanyDesktop
 {
     public partial class Form1 : Form
     {
-        private static Service _service;
+
+        private Service _service;
+        static Timer timer;
+        private PrayerTimesAPI prayerTimes;
 
         public Form1()
         {
             InitializeComponent();
             _service = new Service(new HttpClient());
+            // init a System.Threading.Timer
+
+            timer = new Timer(
+                new TimerCallback(notifyPrayerTime),
+                null,
+                TimeSpan.FromSeconds(30),
+                TimeSpan.FromSeconds(10));
+        }
+
+        private void notifyPrayerTime(object state)
+        {
+            Dictionary<string, string> schedualedTimes = new Dictionary<string, string>();
+            if (prayerTimes != null)
+            {
+                schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Fajr), prayerTimes.Data.Timings.Fajr);
+                schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Sunrise), prayerTimes.Data.Timings.Sunrise);
+                schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Dhuhr), prayerTimes.Data.Timings.Dhuhr);
+                schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Asr), prayerTimes.Data.Timings.Asr);
+                schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Maghrib), prayerTimes.Data.Timings.Maghrib);
+                schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Isha), prayerTimes.Data.Timings.Isha);
+            }
+
+            var currentTime = "05:43"; //DateTime.Now.ToString("HH:mm");
+            foreach (var time in schedualedTimes)
+            {
+                if (time.Value == currentTime)
+                {
+                    MessageBox.Show($"It's {time.Key} prayer time!");
+                }
+            }
         }
 
         /* 
@@ -22,15 +55,19 @@ namespace AdhanyDesktop
         private async void Form1_Load(object sender, EventArgs e)
         {
             bindMethodBox();
+            loadFromSettings();
 
-            bool settingsExist = Properties.Settings.Default.Country != String.Empty
-                && Properties.Settings.Default.City != String.Empty;
-            
-            loadFromSettings(settingsExist);
+
         }
 
-        private async void loadFromSettings(bool settingsExist)
+        /// <summary>
+        /// Checks for saved settings and displays the prayer times if they exist
+        /// </summary>
+        private async void loadFromSettings()
         {
+            bool settingsExist = Properties.Settings.Default.Country != String.Empty
+                && Properties.Settings.Default.City != String.Empty;
+
             if (settingsExist)
             {
                 // populate the combo box values from the saved settings
@@ -40,7 +77,7 @@ namespace AdhanyDesktop
 
                 statusProgressBar.Value = 25;
                 // get the prayer times for these settings
-                PrayerTimesAPI prayerTimes = await _service.GetPrayerTimesAsync(
+                prayerTimes = await _service.GetPrayerTimesAsync(
                     Properties.Settings.Default.Country,
                     Properties.Settings.Default.City,
                     Properties.Settings.Default.Method);
@@ -92,7 +129,7 @@ namespace AdhanyDesktop
             Properties.Settings.Default.Save();
 
             statusProgressBar.Value = 50;
-            PrayerTimesAPI prayerTimes = await _service.GetPrayerTimesAsync(country, city, method.id);
+            prayerTimes = await _service.GetPrayerTimesAsync(country, city, method.id);
 
             statusProgressBar.Value = 75;
             res_location.Text = city + ", " + country;
