@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             panel1 = new Panel();
             lbl_settingInfo = new Label();
             groupBox1 = new GroupBox();
@@ -68,7 +69,8 @@
             menuStrip1 = new MenuStrip();
             resetSettingsToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
-            notifyIcon = new NotifyIcon(components);
+            NotifyIcon = new NotifyIcon(components);
+            TrayIcon = new NotifyIcon(components);
             panel1.SuspendLayout();
             groupBox1.SuspendLayout();
             panel4.SuspendLayout();
@@ -501,12 +503,19 @@
             exitToolStripMenuItem.Text = "E&xit";
             exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
             // 
-            // notifyIcon
+            // NotifyIcon
             // 
-            notifyIcon.BalloonTipIcon = ToolTipIcon.Info;
-            notifyIcon.BalloonTipTitle = "Adhan";
-            notifyIcon.Visible = true;
-            notifyIcon.BalloonTipClicked += notifyIcon_BalloonTipClicked;
+            NotifyIcon.Visible = true;
+            NotifyIcon.BalloonTipClicked += NotifyIcon_BalloonTipClicked;
+            NotifyIcon.Click += NotifyIcon_Click;
+            // 
+            // TrayIcon
+            // 
+            TrayIcon.BalloonTipText = "The app is minimized and working in the background";
+            TrayIcon.BalloonTipTitle = "Minimized to system tray";
+            TrayIcon.Icon = (Icon)resources.GetObject("TrayIcon.Icon");
+            TrayIcon.Text = "Adhany Desktop";
+            TrayIcon.MouseDoubleClick += TrayIcon_MouseDoubleClick;
             // 
             // Form1
             // 
@@ -521,6 +530,7 @@
             Name = "Form1";
             Text = "Form1";
             Load += Form1_Load;
+            Resize += Form1_Resize;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             groupBox1.ResumeLayout(false);
@@ -581,6 +591,7 @@
         private MenuStrip menuStrip1;
         private ToolStripMenuItem resetSettingsToolStripMenuItem;
         private ToolStripMenuItem exitToolStripMenuItem;
-        private NotifyIcon notifyIcon;
+        private NotifyIcon NotifyIcon;
+        private NotifyIcon TrayIcon;
     }
 }

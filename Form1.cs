@@ -57,7 +57,7 @@ namespace AdhanyDesktop
                 schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Isha), prayerTimes.Data.Timings.Isha);
             }
 
-            var currentTime = "05:43"; //DateTime.Now.ToString("HH:mm");
+            var currentTime = "05:44"; //DateTime.Now.ToString("HH:mm");
             foreach (var time in schedualedTimes)
             {
                 if (time.Value == currentTime)
@@ -89,12 +89,12 @@ namespace AdhanyDesktop
         /// <param name="prayerName"></param>
         private void ShowNotification(string prayerName)
         {
-
-            notifyIcon.BalloonTipIcon = ToolTipIcon.Info;
-            notifyIcon.Icon = SystemIcons.Information;
-            notifyIcon.BalloonTipText = $"It's {prayerName} time";
-            notifyIcon.Visible = true;
-            notifyIcon.ShowBalloonTip(2000);
+            NotifyIcon.Icon = new Icon(@"C:\ASP_Projects\AdhanyDesktop\Img\call.ico");
+            NotifyIcon.Text = "Click to stop the Adhan";
+            NotifyIcon.BalloonTipText = $"It's {prayerName} time";
+            NotifyIcon.BalloonTipTitle = "Adhan";
+            NotifyIcon.Visible = true;
+            NotifyIcon.ShowBalloonTip(2000);
         }
 
         private void SoundPlayer_LoadCompleted(object? sender, AsyncCompletedEventArgs e)
@@ -233,7 +233,12 @@ namespace AdhanyDesktop
             this.Close();
         }
 
-        private void notifyIcon_BalloonTipClicked(object sender, EventArgs e)
+        private void NotifyIcon_BalloonTipClicked(object sender, EventArgs e)
+        {
+            StopAdhanMessageBox();
+        }
+
+        private void StopAdhanMessageBox()
         {
             string message = "Do you want to stop the Adhan?";
             string caption = "Adhan";
@@ -245,7 +250,36 @@ namespace AdhanyDesktop
             {
                 // will need to stop playing the adhan sound
                 SoundPlayer.Stop();
+                NotifyIcon.Visible = false;
             }
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            //if the form is minimized
+            //hide it from the task bar
+            //and show the system tray icon (represented by the trayIcon control)
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                Hide();
+                TrayIcon.Visible = true;
+                // the timeout parameter is deprecated (has no affect)
+                // but still needs to be passed
+                TrayIcon.ShowBalloonTip(2000);
+            }
+        }
+
+        private void TrayIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            Show();
+            this.WindowState = FormWindowState.Normal;
+            TrayIcon.Visible = false;
+        }
+
+        private void NotifyIcon_Click(object sender, EventArgs e)
+        {
+            NotifyIcon.Visible = false;
+            StopAdhanMessageBox();
         }
     }
 }
