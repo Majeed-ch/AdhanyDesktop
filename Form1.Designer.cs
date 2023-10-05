@@ -74,6 +74,7 @@
             panel2 = new Panel();
             ddl_country = new ComboBox();
             label2 = new Label();
+            ToolTipHelp = new ToolTip(components);
             statusStrip1.SuspendLayout();
             menuStrip1.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -443,6 +444,7 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(219, 53);
             panel1.TabIndex = 7;
+            ToolTipHelp.SetToolTip(panel1, "Select the sound for the notification\r\nFull Adhan or only first two Takbeer\r\n");
             // 
             // label6
             // 
@@ -510,6 +512,7 @@
             ddl_method.Name = "ddl_method";
             ddl_method.Size = new Size(209, 23);
             ddl_method.TabIndex = 1;
+            ToolTipHelp.SetToolTip(ddl_method, "This is to calculate the prayer times.\r\nSelect the method used by your country,\r\nor Auto to get the method from our database.");
             // 
             // label4
             // 
@@ -600,6 +603,15 @@
             label2.TabIndex = 0;
             label2.Text = "Country";
             // 
+            // ToolTipHelp
+            // 
+            ToolTipHelp.AutoPopDelay = 6000;
+            ToolTipHelp.InitialDelay = 500;
+            ToolTipHelp.IsBalloon = true;
+            ToolTipHelp.ReshowDelay = 100;
+            ToolTipHelp.ToolTipIcon = ToolTipIcon.Info;
+            ToolTipHelp.ToolTipTitle = "Help";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -687,5 +699,6 @@
         private RadioButton radioTakbeer;
         private RadioButton radioFull;
         private Label label6;
+        private ToolTip ToolTipHelp;
     }
 }

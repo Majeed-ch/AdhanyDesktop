@@ -21,11 +21,23 @@ namespace AdhanyDesktop
             _service = new Service(new HttpClient());
             SoundPlayer.LoadCompleted += new AsyncCompletedEventHandler(SoundPlayer_LoadCompleted);
 
+            // Create a timer that will call the NotifyPrayerTime but don't start it yet
+            // the timer will be started when the user saves the settings or loads from saved settings
             timer = new Timer(
                 new TimerCallback(NotifyPrayerTime),
                 null,
-                TimeSpan.FromSeconds(10),
-                TimeSpan.FromSeconds(30));
+                Timeout.InfiniteTimeSpan,
+                Timeout.InfiniteTimeSpan);
+
+            // Check the radio button for the saved Adhan type
+            if (Properties.Settings.Default.AdhanType == "full")
+            {
+                radioFull.Checked = true;
+            }
+            else
+            {
+                radioTakbeer.Checked = true;
+            }
         }
 
         /* 
@@ -143,6 +155,8 @@ namespace AdhanyDesktop
 
                 statusProgressBar.Value = 100;
                 statusLabel.Text = "Prayer times from saved settings";
+                // start the timer with 30 seconds interval
+                timer.Change(TimeSpan.Zero, TimeSpan.FromSeconds(59));
             }
             else
             {
@@ -199,6 +213,8 @@ namespace AdhanyDesktop
             statusProgressBar.Value = 100;
             statusLabel.Text = "Done";
             MessageBox.Show("Prayer times fetched successfully");
+            // start the timer with 59 seconds interval
+            timer.Change(TimeSpan.Zero, TimeSpan.FromSeconds(59));
         }
 
         /// <summary>
@@ -231,6 +247,8 @@ namespace AdhanyDesktop
             statusProgressBar.Value = 0;
             _service.deleteLocalFile();
             prayerTimes = null;
+            timer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
+
             MessageBox.Show("Settings reset successfully");
         }
 
