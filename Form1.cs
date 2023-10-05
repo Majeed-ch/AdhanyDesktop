@@ -46,18 +46,19 @@ namespace AdhanyDesktop
         /// <param name="state"></param>
         private void NotifyPrayerTime(object state)
         {
-            Dictionary<string, string> schedualedTimes = new Dictionary<string, string>();
-            if (prayerTimes != null)
-            {
-                schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Fajr), prayerTimes.Data.Timings.Fajr);
-                schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Sunrise), prayerTimes.Data.Timings.Sunrise);
-                schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Dhuhr), prayerTimes.Data.Timings.Dhuhr);
-                schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Asr), prayerTimes.Data.Timings.Asr);
-                schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Maghrib), prayerTimes.Data.Timings.Maghrib);
-                schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Isha), prayerTimes.Data.Timings.Isha);
-            }
+            if (prayerTimes == null)
+                return;
 
-            var currentTime = "05:43"; //DateTime.Now.ToString("HH:mm");
+            Dictionary<string, string> schedualedTimes = new Dictionary<string, string>();
+
+            schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Fajr), prayerTimes.Data.Timings.Fajr);
+            schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Sunrise), prayerTimes.Data.Timings.Sunrise);
+            schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Dhuhr), prayerTimes.Data.Timings.Dhuhr);
+            schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Asr), prayerTimes.Data.Timings.Asr);
+            schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Maghrib), prayerTimes.Data.Timings.Maghrib);
+            schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Isha), prayerTimes.Data.Timings.Isha);
+
+            var currentTime = DateTime.Now.ToString("HH:mm");
             foreach (var time in schedualedTimes)
             {
                 if (time.Value == currentTime)
@@ -73,7 +74,7 @@ namespace AdhanyDesktop
         {
             try
             {
-                SoundPlayer.SoundLocation = @"C:\ASP_Projects\AdhanyDesktop\Audio\Takbeer_Mishari.wav";
+                SoundPlayer.SoundLocation = @"Audio\Takbeer_Mishari.wav";
                 SoundPlayer.LoadAsync();
             }
             catch (Exception ex)
@@ -89,12 +90,13 @@ namespace AdhanyDesktop
         /// <param name="prayerName"></param>
         private void ShowNotification(string prayerName)
         {
-
-            notifyIcon.BalloonTipIcon = ToolTipIcon.Info;
-            notifyIcon.Icon = SystemIcons.Information;
-            notifyIcon.BalloonTipText = $"It's {prayerName} time";
-            notifyIcon.Visible = true;
-            notifyIcon.ShowBalloonTip(2000);
+            NotifyIcon.Icon = new Icon(@"icon\call.ico");
+            NotifyIcon.Text = "Click to stop the Adhan";
+            NotifyIcon.BalloonTipText = $"It's {prayerName} time";
+            NotifyIcon.BalloonTipTitle = "Adhan";
+            NotifyIcon.BalloonTipIcon = ToolTipIcon.None;
+            NotifyIcon.Visible = true;
+            NotifyIcon.ShowBalloonTip(2000);
         }
 
         private void SoundPlayer_LoadCompleted(object? sender, AsyncCompletedEventArgs e)
@@ -222,9 +224,10 @@ namespace AdhanyDesktop
             ddl_country.Text = String.Empty;
             ddl_city.Text = String.Empty;
             ddl_method.Text = String.Empty;
-            _service.deleteLocalFile();
             statusLabel.Text = "";
             statusProgressBar.Value = 0;
+            _service.deleteLocalFile();
+            prayerTimes = null;
             MessageBox.Show("Settings reset successfully");
         }
 
@@ -233,19 +236,55 @@ namespace AdhanyDesktop
             this.Close();
         }
 
-        private void notifyIcon_BalloonTipClicked(object sender, EventArgs e)
+        private void NotifyIcon_BalloonTipClicked(object sender, EventArgs e)
+        {
+            StopAdhanMessageBox();
+        }
+
+        private void StopAdhanMessageBox()
         {
             string message = "Do you want to stop the Adhan?";
             string caption = "Adhan";
             MessageBoxButtons buttons = MessageBoxButtons.YesNo;
             DialogResult result;
-            result = MessageBox.Show(message, caption, buttons);
+            result = MessageBox.Show(message, caption, buttons,
+                MessageBoxIcon.None,
+                MessageBoxDefaultButton.Button1,
+                MessageBoxOptions.DefaultDesktopOnly);
 
             if (result == DialogResult.Yes)
             {
                 // will need to stop playing the adhan sound
                 SoundPlayer.Stop();
+                NotifyIcon.Visible = false;
             }
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            //if the form is minimized
+            //hide it from the task bar
+            //and show the system tray icon (represented by the trayIcon control)
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                Hide();
+                TrayIcon.Visible = true;
+                // the timeout parameter is deprecated (has no affect)
+                // but still needs to be passed
+                TrayIcon.ShowBalloonTip(2000);
+            }
+        }
+
+        private void TrayIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            Show();
+            this.WindowState = FormWindowState.Normal;
+            TrayIcon.Visible = false;
+        }
+
+        private void NotifyIcon_Click(object sender, EventArgs e)
+        {
+            StopAdhanMessageBox();
         }
     }
 }
