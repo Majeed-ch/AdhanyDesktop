@@ -54,9 +54,9 @@ namespace AdhanyDesktop.Services
             }
 
             var request = new HttpRequestMessage(HttpMethod.Get, uri);
-            var response = await httpClient.SendAsync(request);
             try
             {
+                var response = await httpClient.SendAsync(request);
                 response.EnsureSuccessStatusCode();
                 prayerTimes = await response.Content.ReadFromJsonAsync<PrayerTimesAPI>();
                 prayerTimes.Location = new Location { City = city, Country = country };
@@ -64,8 +64,10 @@ namespace AdhanyDesktop.Services
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                MessageBox.Show("Error occurred fetching data\n" +
+                    "Make sure you're connected to the Internet!", "Error!");
             }
+            // return null if something went wrong
             return prayerTimes;
         }
 
