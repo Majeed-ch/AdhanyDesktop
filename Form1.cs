@@ -46,18 +46,19 @@ namespace AdhanyDesktop
         /// <param name="state"></param>
         private void NotifyPrayerTime(object state)
         {
-            Dictionary<string, string> schedualedTimes = new Dictionary<string, string>();
-            if (prayerTimes != null)
-            {
-                schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Fajr), prayerTimes.Data.Timings.Fajr);
-                schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Sunrise), prayerTimes.Data.Timings.Sunrise);
-                schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Dhuhr), prayerTimes.Data.Timings.Dhuhr);
-                schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Asr), prayerTimes.Data.Timings.Asr);
-                schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Maghrib), prayerTimes.Data.Timings.Maghrib);
-                schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Isha), prayerTimes.Data.Timings.Isha);
-            }
+            if (prayerTimes == null)
+                return;
 
-            var currentTime = "05:44"; //DateTime.Now.ToString("HH:mm");
+            Dictionary<string, string> schedualedTimes = new Dictionary<string, string>();
+
+            schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Fajr), prayerTimes.Data.Timings.Fajr);
+            schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Sunrise), prayerTimes.Data.Timings.Sunrise);
+            schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Dhuhr), prayerTimes.Data.Timings.Dhuhr);
+            schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Asr), prayerTimes.Data.Timings.Asr);
+            schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Maghrib), prayerTimes.Data.Timings.Maghrib);
+            schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Isha), prayerTimes.Data.Timings.Isha);
+
+            var currentTime = DateTime.Now.ToString("HH:mm");
             foreach (var time in schedualedTimes)
             {
                 if (time.Value == currentTime)
@@ -223,9 +224,10 @@ namespace AdhanyDesktop
             ddl_country.Text = String.Empty;
             ddl_city.Text = String.Empty;
             ddl_method.Text = String.Empty;
-            _service.deleteLocalFile();
             statusLabel.Text = "";
             statusProgressBar.Value = 0;
+            _service.deleteLocalFile();
+            prayerTimes = null;
             MessageBox.Show("Settings reset successfully");
         }
 
@@ -282,7 +284,6 @@ namespace AdhanyDesktop
 
         private void NotifyIcon_Click(object sender, EventArgs e)
         {
-            NotifyIcon.Visible = false;
             StopAdhanMessageBox();
         }
     }
