@@ -73,7 +73,7 @@ namespace AdhanyDesktop
         {
             try
             {
-                SoundPlayer.SoundLocation = @"C:\ASP_Projects\AdhanyDesktop\Audio\Takbeer_Mishari.wav";
+                SoundPlayer.SoundLocation = @"Audio\Takbeer_Mishari.wav";
                 SoundPlayer.LoadAsync();
             }
             catch (Exception ex)
@@ -89,10 +89,11 @@ namespace AdhanyDesktop
         /// <param name="prayerName"></param>
         private void ShowNotification(string prayerName)
         {
-            NotifyIcon.Icon = new Icon(@"C:\ASP_Projects\AdhanyDesktop\Img\call.ico");
+            NotifyIcon.Icon = new Icon(@"icon\call.ico");
             NotifyIcon.Text = "Click to stop the Adhan";
             NotifyIcon.BalloonTipText = $"It's {prayerName} time";
             NotifyIcon.BalloonTipTitle = "Adhan";
+            NotifyIcon.BalloonTipIcon = ToolTipIcon.None;
             NotifyIcon.Visible = true;
             NotifyIcon.ShowBalloonTip(2000);
         }
@@ -244,7 +245,10 @@ namespace AdhanyDesktop
             string caption = "Adhan";
             MessageBoxButtons buttons = MessageBoxButtons.YesNo;
             DialogResult result;
-            result = MessageBox.Show(message, caption, buttons);
+            result = MessageBox.Show(message, caption, buttons,
+                MessageBoxIcon.None,
+                MessageBoxDefaultButton.Button1,
+                MessageBoxOptions.DefaultDesktopOnly);
 
             if (result == DialogResult.Yes)
             {
