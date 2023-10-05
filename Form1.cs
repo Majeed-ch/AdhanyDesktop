@@ -58,7 +58,7 @@ namespace AdhanyDesktop
             schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Maghrib), prayerTimes.Data.Timings.Maghrib);
             schedualedTimes.Add(nameof(prayerTimes.Data.Timings.Isha), prayerTimes.Data.Timings.Isha);
 
-            var currentTime = DateTime.Now.ToString("HH:mm");
+            var currentTime = "18:36"; //DateTime.Now.ToString("HH:mm");
             foreach (var time in schedualedTimes)
             {
                 if (time.Value == currentTime)
@@ -74,7 +74,8 @@ namespace AdhanyDesktop
         {
             try
             {
-                SoundPlayer.SoundLocation = @"Audio\Takbeer_Mishari.wav";
+                var adhanType = Properties.Settings.Default.AdhanType;
+                SoundPlayer.SoundLocation = adhanType == "full" ? @"Audio\Adhan_Al_Deghreri.wav" : @"Audio\Takbeer_Mishari.wav";
                 SoundPlayer.LoadAsync();
             }
             catch (Exception ex)
@@ -177,12 +178,14 @@ namespace AdhanyDesktop
             var country = ddl_country.SelectedItem.ToString();
             var city = ddl_city.SelectedItem.ToString();
             var method = (CalculationMethod)ddl_method.SelectedItem;
+            var adhanType = radioFull.Checked ? "full" : "short";
 
             statusProgressBar.Value = 25;
             // Save the settings
             Properties.Settings.Default.Country = country;
             Properties.Settings.Default.City = city;
             Properties.Settings.Default.Method = method.id;
+            Properties.Settings.Default.AdhanType = adhanType;
             Properties.Settings.Default.Save();
 
             statusProgressBar.Value = 50;

@@ -59,6 +59,10 @@
             res_location = new Label();
             label5 = new Label();
             groupBox1 = new GroupBox();
+            panel1 = new Panel();
+            label6 = new Label();
+            radioTakbeer = new RadioButton();
+            radioFull = new RadioButton();
             label1 = new Label();
             panel4 = new Panel();
             ddl_method = new ComboBox();
@@ -75,6 +79,7 @@
             groupBox2.SuspendLayout();
             table_fetchedData.SuspendLayout();
             groupBox1.SuspendLayout();
+            panel1.SuspendLayout();
             panel4.SuspendLayout();
             panel3.SuspendLayout();
             panel2.SuspendLayout();
@@ -415,6 +420,7 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(panel1);
             groupBox1.Controls.Add(label1);
             groupBox1.Controls.Add(panel4);
             groupBox1.Controls.Add(btn_save);
@@ -428,11 +434,56 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "Location Settings";
             // 
+            // panel1
+            // 
+            panel1.Controls.Add(label6);
+            panel1.Controls.Add(radioTakbeer);
+            panel1.Controls.Add(radioFull);
+            panel1.Location = new Point(8, 225);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(219, 53);
+            panel1.TabIndex = 7;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Dock = DockStyle.Top;
+            label6.Location = new Point(0, 0);
+            label6.Margin = new Padding(0);
+            label6.Name = "label6";
+            label6.Size = new Size(104, 15);
+            label6.TabIndex = 2;
+            label6.Text = "Prayer time notifiy";
+            // 
+            // radioTakbeer
+            // 
+            radioTakbeer.AutoSize = true;
+            radioTakbeer.Cursor = Cursors.Hand;
+            radioTakbeer.Location = new Point(115, 20);
+            radioTakbeer.Name = "radioTakbeer";
+            radioTakbeer.Size = new Size(94, 19);
+            radioTakbeer.TabIndex = 1;
+            radioTakbeer.Text = "Only Takbeer";
+            radioTakbeer.UseVisualStyleBackColor = true;
+            // 
+            // radioFull
+            // 
+            radioFull.AutoSize = true;
+            radioFull.Checked = true;
+            radioFull.Cursor = Cursors.Hand;
+            radioFull.Location = new Point(3, 20);
+            radioFull.Name = "radioFull";
+            radioFull.Size = new Size(82, 19);
+            radioFull.TabIndex = 0;
+            radioFull.TabStop = true;
+            radioFull.Text = "Full Adhan";
+            radioFull.UseVisualStyleBackColor = true;
+            // 
             // label1
             // 
             label1.AutoSize = true;
             label1.FlatStyle = FlatStyle.Flat;
-            label1.Location = new Point(6, 29);
+            label1.Location = new Point(6, 19);
             label1.MaximumSize = new Size(250, 0);
             label1.Name = "label1";
             label1.Size = new Size(246, 30);
@@ -444,7 +495,7 @@
             // 
             panel4.Controls.Add(ddl_method);
             panel4.Controls.Add(label4);
-            panel4.Location = new Point(8, 184);
+            panel4.Location = new Point(8, 172);
             panel4.Margin = new Padding(5, 0, 5, 0);
             panel4.Name = "panel4";
             panel4.Padding = new Padding(0, 0, 10, 10);
@@ -473,7 +524,7 @@
             // 
             // btn_save
             // 
-            btn_save.Location = new Point(6, 244);
+            btn_save.Location = new Point(6, 280);
             btn_save.Name = "btn_save";
             btn_save.Size = new Size(79, 28);
             btn_save.TabIndex = 5;
@@ -485,7 +536,7 @@
             // 
             panel3.Controls.Add(ddl_city);
             panel3.Controls.Add(label3);
-            panel3.Location = new Point(8, 127);
+            panel3.Location = new Point(8, 115);
             panel3.Margin = new Padding(5, 0, 5, 0);
             panel3.Name = "panel3";
             panel3.Padding = new Padding(0, 0, 10, 10);
@@ -519,7 +570,7 @@
             // 
             panel2.Controls.Add(ddl_country);
             panel2.Controls.Add(label2);
-            panel2.Location = new Point(8, 70);
+            panel2.Location = new Point(8, 58);
             panel2.Margin = new Padding(5, 0, 5, 0);
             panel2.Name = "panel2";
             panel2.Padding = new Padding(0, 0, 10, 10);
@@ -579,6 +630,8 @@
             table_fetchedData.PerformLayout();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             panel4.ResumeLayout(false);
             panel4.PerformLayout();
             panel3.ResumeLayout(false);
@@ -630,5 +683,9 @@
         private Label lbl_isha;
         private Label res_location;
         private Label label5;
+        private Panel panel1;
+        private RadioButton radioTakbeer;
+        private RadioButton radioFull;
+        private Label label6;
     }
 }

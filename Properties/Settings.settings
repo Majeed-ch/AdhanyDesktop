@@ -11,5 +11,8 @@
     <Setting Name="Method" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">4</Value>
     </Setting>
+    <Setting Name="AdhanType" Type="System.String" Scope="User">
+      <Value Profile="(Default)">full</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

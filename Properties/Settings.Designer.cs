@@ -58,5 +58,17 @@ namespace AdhanyDesktop.Properties {
                 this["Method"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("full")]
+        public string AdhanType {
+            get {
+                return ((string)(this["AdhanType"]));
+            }
+            set {
+                this["AdhanType"] = value;
+            }
+        }
     }
 }
