@@ -70,5 +70,17 @@ namespace AdhanyDesktop.Properties {
                 this["AdhanType"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int CityIndex {
+            get {
+                return ((int)(this["CityIndex"]));
+            }
+            set {
+                this["CityIndex"] = value;
+            }
+        }
     }
 }

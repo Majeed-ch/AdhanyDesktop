@@ -153,7 +153,7 @@
             groupBox2.Name = "groupBox2";
             groupBox2.Padding = new Padding(0);
             groupBox2.Size = new Size(229, 314);
-            groupBox2.TabIndex = 4;
+            groupBox2.TabIndex = 10;
             groupBox2.TabStop = false;
             groupBox2.Text = "Prayer Times";
             // 
@@ -431,7 +431,7 @@
             groupBox1.Location = new Point(12, 27);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(256, 314);
-            groupBox1.TabIndex = 7;
+            groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Location Settings";
             // 
@@ -443,7 +443,7 @@
             panel1.Location = new Point(8, 225);
             panel1.Name = "panel1";
             panel1.Size = new Size(219, 53);
-            panel1.TabIndex = 7;
+            panel1.TabIndex = 4;
             ToolTipHelp.SetToolTip(panel1, "Select the sound for the notification\r\nFull Adhan or only first two Takbeer\r\n");
             // 
             // label6
@@ -502,16 +502,18 @@
             panel4.Name = "panel4";
             panel4.Padding = new Padding(0, 0, 10, 10);
             panel4.Size = new Size(219, 57);
-            panel4.TabIndex = 4;
+            panel4.TabIndex = 3;
             // 
             // ddl_method
             // 
+            ddl_method.AutoCompleteMode = AutoCompleteMode.Append;
+            ddl_method.AutoCompleteSource = AutoCompleteSource.ListItems;
             ddl_method.Dock = DockStyle.Bottom;
             ddl_method.FormattingEnabled = true;
             ddl_method.Location = new Point(0, 24);
             ddl_method.Name = "ddl_method";
             ddl_method.Size = new Size(209, 23);
-            ddl_method.TabIndex = 1;
+            ddl_method.TabIndex = 0;
             ToolTipHelp.SetToolTip(ddl_method, "This is to calculate the prayer times.\r\nSelect the method used by your country,\r\nor Auto to get the method from our database.");
             // 
             // label4
@@ -530,7 +532,7 @@
             btn_save.Location = new Point(6, 280);
             btn_save.Name = "btn_save";
             btn_save.Size = new Size(79, 28);
-            btn_save.TabIndex = 5;
+            btn_save.TabIndex = 6;
             btn_save.Text = "Save";
             btn_save.UseVisualStyleBackColor = true;
             btn_save.Click += btn_save_Click;
@@ -544,7 +546,7 @@
             panel3.Name = "panel3";
             panel3.Padding = new Padding(0, 0, 10, 10);
             panel3.Size = new Size(219, 57);
-            panel3.TabIndex = 4;
+            panel3.TabIndex = 2;
             // 
             // ddl_city
             // 
@@ -552,11 +554,11 @@
             ddl_city.AutoCompleteSource = AutoCompleteSource.ListItems;
             ddl_city.Dock = DockStyle.Bottom;
             ddl_city.FormattingEnabled = true;
-            ddl_city.Items.AddRange(new object[] { "Ottawa", "Riyadh" });
+            ddl_city.Items.AddRange(new object[] { "Select a Country to see the cities" });
             ddl_city.Location = new Point(0, 24);
             ddl_city.Name = "ddl_city";
             ddl_city.Size = new Size(209, 23);
-            ddl_city.TabIndex = 1;
+            ddl_city.TabIndex = 0;
             // 
             // label3
             // 
@@ -578,7 +580,7 @@
             panel2.Name = "panel2";
             panel2.Padding = new Padding(0, 0, 10, 10);
             panel2.Size = new Size(219, 57);
-            panel2.TabIndex = 3;
+            panel2.TabIndex = 1;
             // 
             // ddl_country
             // 
@@ -590,7 +592,8 @@
             ddl_country.Location = new Point(0, 24);
             ddl_country.Name = "ddl_country";
             ddl_country.Size = new Size(209, 23);
-            ddl_country.TabIndex = 1;
+            ddl_country.TabIndex = 0;
+            ddl_country.SelectedValueChanged += ddl_country_SelectedValueChanged;
             // 
             // label2
             // 

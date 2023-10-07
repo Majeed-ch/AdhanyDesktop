@@ -53,6 +53,8 @@ namespace AdhanyDesktop.Services
                     return prayerTimes;
             }
 
+            // Fetch the new data from the API if the data is not cached
+            // or if the data is cached but it's old, or user changed the city or country
             var request = new HttpRequestMessage(HttpMethod.Get, uri);
             try
             {
@@ -60,7 +62,7 @@ namespace AdhanyDesktop.Services
                 response.EnsureSuccessStatusCode();
                 prayerTimes = await response.Content.ReadFromJsonAsync<PrayerTimesAPI>();
                 prayerTimes.Location = new Location { City = city, Country = country };
-                saveToLocalFile(prayerTimes);
+                SaveToLocalFile(prayerTimes);
             }
             catch (Exception e)
             {
@@ -71,12 +73,20 @@ namespace AdhanyDesktop.Services
             return prayerTimes;
         }
 
-        public void saveToLocalFile(PrayerTimesAPI prayerTimes)
+        /// <summary>
+        /// Saves the prayer times to a local file
+        /// </summary>
+        /// <param name="prayerTimes"></param>
+        public static void SaveToLocalFile(PrayerTimesAPI prayerTimes)
         {
             var json = JsonSerializer.Serialize(prayerTimes);
             File.WriteAllText("savedPrayerTimes.json", json);
         }
-        public void deleteLocalFile()
+
+        /// <summary>
+        /// Deletes the local file that contains the prayer times
+        /// </summary>
+        public static void DeleteLocalFile()
         {
             if (File.Exists("savedPrayerTimes.json"))
                 File.Delete("savedPrayerTimes.json");
