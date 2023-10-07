@@ -444,7 +444,6 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(219, 53);
             panel1.TabIndex = 4;
-            ToolTipHelp.SetToolTip(panel1, "Select the sound for the notification\r\nFull Adhan or only first two Takbeer\r\n");
             // 
             // label6
             // 
@@ -466,6 +465,7 @@
             radioTakbeer.Size = new Size(94, 19);
             radioTakbeer.TabIndex = 1;
             radioTakbeer.Text = "Only Takbeer";
+            ToolTipHelp.SetToolTip(radioTakbeer, "Select the sound for the notification");
             radioTakbeer.UseVisualStyleBackColor = true;
             // 
             // radioFull
@@ -479,6 +479,7 @@
             radioFull.TabIndex = 0;
             radioFull.TabStop = true;
             radioFull.Text = "Full Adhan";
+            ToolTipHelp.SetToolTip(radioFull, "Select the sound for the notification");
             radioFull.UseVisualStyleBackColor = true;
             // 
             // label1
@@ -660,7 +661,6 @@
         #endregion
         private StatusStrip statusStrip1;
         private ToolStripProgressBar statusProgressBar;
-        private ToolStripStatusLabel statusLabel;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem resetSettingsToolStripMenuItem;
         private ToolStripMenuItem exitToolStripMenuItem;
@@ -703,5 +703,6 @@
         private RadioButton radioFull;
         private Label label6;
         private ToolTip ToolTipHelp;
+        private ToolStripStatusLabel statusLabel;
     }
 }

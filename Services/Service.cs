@@ -66,8 +66,10 @@ namespace AdhanyDesktop.Services
             }
             catch (Exception e)
             {
-                MessageBox.Show("Error occurred fetching data\n" +
-                    "Make sure you're connected to the Internet!", "Error!");
+                MessageBox.Show("Error occurred fetching todays prayer times\n" +
+                    "Make sure you're connected to the Internet!\n\n" +
+                    "Showing last saved prayer times", "Error!");
+                return prayerTimes;
             }
             // return null if something went wrong
             return prayerTimes;
