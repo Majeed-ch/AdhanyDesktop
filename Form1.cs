@@ -2,6 +2,7 @@
 using AdhanyDesktop.Services;
 using System.ComponentModel;
 using System.Media;
+using System.Text.Json;
 using Timer = System.Threading.Timer;
 
 namespace AdhanyDesktop
@@ -21,11 +22,23 @@ namespace AdhanyDesktop
             _service = new Service(new HttpClient());
             SoundPlayer.LoadCompleted += new AsyncCompletedEventHandler(SoundPlayer_LoadCompleted);
 
+            // Create a timer that will call the NotifyPrayerTime but don't start it yet
+            // the timer will be started when the user saves the settings or loads from saved settings
             timer = new Timer(
                 new TimerCallback(NotifyPrayerTime),
                 null,
-                TimeSpan.FromSeconds(10),
-                TimeSpan.FromSeconds(30));
+                Timeout.InfiniteTimeSpan,
+                Timeout.InfiniteTimeSpan);
+
+            // Check the radio button for the saved Adhan type
+            if (Properties.Settings.Default.AdhanType == "full")
+            {
+                radioFull.Checked = true;
+            }
+            else
+            {
+                radioTakbeer.Checked = true;
+            }
         }
 
         /* 
@@ -74,7 +87,8 @@ namespace AdhanyDesktop
         {
             try
             {
-                SoundPlayer.SoundLocation = @"Audio\Takbeer_Mishari.wav";
+                var adhanType = Properties.Settings.Default.AdhanType;
+                SoundPlayer.SoundLocation = adhanType == "full" ? @"Audio\Adhan_Al_Deghreri.wav" : @"Audio\Takbeer_Mishari.wav";
                 SoundPlayer.LoadAsync();
             }
             catch (Exception ex)
@@ -125,8 +139,8 @@ namespace AdhanyDesktop
             if (settingsExist)
             {
                 // populate the combo box values from the saved settings
+                // city's value is being set in the ddl_country_SelectedValueChanged
                 ddl_country.SelectedItem = Properties.Settings.Default.Country;
-                ddl_city.SelectedItem = Properties.Settings.Default.City;
                 ddl_method.SelectedValue = Properties.Settings.Default.Method;
 
                 statusProgressBar.Value = 25;
@@ -142,6 +156,8 @@ namespace AdhanyDesktop
 
                 statusProgressBar.Value = 100;
                 statusLabel.Text = "Prayer times from saved settings";
+                // start the timer with 30 seconds interval
+                timer.Change(TimeSpan.Zero, TimeSpan.FromSeconds(59));
             }
             else
             {
@@ -168,34 +184,94 @@ namespace AdhanyDesktop
             ddl_method.ValueMember = "id";
         }
 
+        private City[] BindCityBox()
+        {
+            var countryName = ddl_country.SelectedItem.ToString();
+            City[] cities = null;
+
+            // Get the cities for the selected country from the Json file
+            if (File.Exists("cities.json"))
+            {
+                var json = File.ReadAllText("cities.json");
+                var countries = JsonSerializer.Deserialize<CountryCityModel>(json);
+
+                if (countries == null)
+                {
+                    statusLabel.Text = "Error occurred fetching data, try again later.";
+                    return cities;
+                }
+
+                // Find the country by name then its cities
+                var selectedCountry = countries.countries.FirstOrDefault(c => c.name == countryName);
+                if (selectedCountry != null)
+                {
+                    cities = selectedCountry.cities;
+                    ddl_city.DataSource = cities;
+                    ddl_city.DisplayMember = "Name";
+                    ddl_city.ValueMember = "Name";
+
+                    return cities;
+                }
+                else
+                {
+                    statusLabel.Text = "Error occurred fetching data, try again later.";
+                }
+            }
+            return cities;
+
+        }
+
         private async void btn_save_Click(object sender, EventArgs e)
         {
             statusProgressBar.Value = 0;
             table_fetchedData.Visible = false;
             statusLabel.Text = "Fetching Data...";
 
-            var country = ddl_country.SelectedItem.ToString();
-            var city = ddl_city.SelectedItem.ToString();
-            var method = (CalculationMethod)ddl_method.SelectedItem;
+            try
+            {
+                var country = ddl_country.SelectedItem.ToString();
+                City city = (City)ddl_city.SelectedItem;
+                var method = (CalculationMethod)ddl_method.SelectedItem;
+                var adhanType = radioFull.Checked ? "full" : "short";
 
-            statusProgressBar.Value = 25;
-            // Save the settings
-            Properties.Settings.Default.Country = country;
-            Properties.Settings.Default.City = city;
-            Properties.Settings.Default.Method = method.id;
-            Properties.Settings.Default.Save();
+                statusProgressBar.Value = 25;
+                // Save the settings
+                Properties.Settings.Default.Country = country;
+                Properties.Settings.Default.City = city.name;
+                Properties.Settings.Default.Method = method.id;
+                Properties.Settings.Default.AdhanType = adhanType;
+                Properties.Settings.Default.Save();
 
-            statusProgressBar.Value = 50;
-            prayerTimes = await _service.GetPrayerTimesAsync(country, city, method.id);
+                statusProgressBar.Value = 50;
+                prayerTimes = await _service.GetPrayerTimesAsync(country, city.name, method.id);
 
-            statusProgressBar.Value = 75;
-            res_location.Text = city + ", " + country;
-            DisplayPrayerTimes(prayerTimes);
+                if (prayerTimes == null)
+                {
+                    statusProgressBar.Value = 0;
+                    statusLabel.Text = "Error occurred fetching data, try again later.";
+                    return;
+                }
+
+                statusProgressBar.Value = 75;
+                res_location.Text = city + ", " + country;
+                DisplayPrayerTimes(prayerTimes);
 
 
-            statusProgressBar.Value = 100;
-            statusLabel.Text = "Done";
-            MessageBox.Show("Prayer times fetched successfully");
+                statusProgressBar.Value = 100;
+                statusLabel.Text = "Done";
+                MessageBox.Show("Prayer times fetched successfully");
+                // start the timer with 59 seconds interval
+                timer.Change(TimeSpan.Zero, TimeSpan.FromSeconds(59));
+            }
+            catch (Exception ex)
+            {
+                statusProgressBar.Value = 0;
+                statusLabel.Text = "Error occurred fetching data";
+                MessageBox.Show("Please select Country and City in order to save and show prayer times", "Warning");
+            }
+
+
+
         }
 
         /// <summary>
@@ -205,7 +281,7 @@ namespace AdhanyDesktop
         private void DisplayPrayerTimes(PrayerTimesAPI prayerTimes)
         {
             res_location.Text = prayerTimes.Location.City + ", " + prayerTimes.Location.Country;
-            res_date.Text = prayerTimes.Data.Date.readable;
+            res_date.Text = prayerTimes.Data.Date.gregorian.date;
             res_hijri.Text = prayerTimes.Data.Date.hijri.date;
             res_fajr.Text = prayerTimes.Data.Timings.Fajr;
             res_sunrise.Text = prayerTimes.Data.Timings.Sunrise;
@@ -221,13 +297,16 @@ namespace AdhanyDesktop
         {
             Properties.Settings.Default.Reset();
             table_fetchedData.Visible = false;
-            ddl_country.Text = String.Empty;
-            ddl_city.Text = String.Empty;
-            ddl_method.Text = String.Empty;
+            ddl_country.SelectedIndex = -1;
+            ddl_city.SelectedIndex = -1;
+            ddl_city.DataSource = null;
+            ddl_method.SelectedIndex = 0;
             statusLabel.Text = "";
             statusProgressBar.Value = 0;
-            _service.deleteLocalFile();
+            Service.DeleteLocalFile();
             prayerTimes = null;
+            timer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
+
             MessageBox.Show("Settings reset successfully");
         }
 
@@ -285,6 +364,20 @@ namespace AdhanyDesktop
         private void NotifyIcon_Click(object sender, EventArgs e)
         {
             StopAdhanMessageBox();
+        }
+
+        private void ddl_country_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (ddl_country.SelectedIndex > -1)
+            {
+                var citiesList = BindCityBox();
+                if (Properties.Settings.Default.Country == ddl_country.SelectedItem.ToString())
+                {
+                    var savedCity = citiesList.FirstOrDefault(c => c.name == Properties.Settings.Default.City);
+                    if (savedCity != null)
+                        ddl_city.SelectedItem = savedCity;
+                }
+            }
         }
     }
 }

@@ -59,6 +59,10 @@
             res_location = new Label();
             label5 = new Label();
             groupBox1 = new GroupBox();
+            panel1 = new Panel();
+            label6 = new Label();
+            radioTakbeer = new RadioButton();
+            radioFull = new RadioButton();
             label1 = new Label();
             panel4 = new Panel();
             ddl_method = new ComboBox();
@@ -70,11 +74,13 @@
             panel2 = new Panel();
             ddl_country = new ComboBox();
             label2 = new Label();
+            ToolTipHelp = new ToolTip(components);
             statusStrip1.SuspendLayout();
             menuStrip1.SuspendLayout();
             groupBox2.SuspendLayout();
             table_fetchedData.SuspendLayout();
             groupBox1.SuspendLayout();
+            panel1.SuspendLayout();
             panel4.SuspendLayout();
             panel3.SuspendLayout();
             panel2.SuspendLayout();
@@ -147,7 +153,7 @@
             groupBox2.Name = "groupBox2";
             groupBox2.Padding = new Padding(0);
             groupBox2.Size = new Size(229, 314);
-            groupBox2.TabIndex = 4;
+            groupBox2.TabIndex = 10;
             groupBox2.TabStop = false;
             groupBox2.Text = "Prayer Times";
             // 
@@ -415,6 +421,7 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(panel1);
             groupBox1.Controls.Add(label1);
             groupBox1.Controls.Add(panel4);
             groupBox1.Controls.Add(btn_save);
@@ -424,15 +431,62 @@
             groupBox1.Location = new Point(12, 27);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(256, 314);
-            groupBox1.TabIndex = 7;
+            groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Location Settings";
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(label6);
+            panel1.Controls.Add(radioTakbeer);
+            panel1.Controls.Add(radioFull);
+            panel1.Location = new Point(8, 225);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(219, 53);
+            panel1.TabIndex = 4;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Dock = DockStyle.Top;
+            label6.Location = new Point(0, 0);
+            label6.Margin = new Padding(0);
+            label6.Name = "label6";
+            label6.Size = new Size(104, 15);
+            label6.TabIndex = 2;
+            label6.Text = "Prayer time notifiy";
+            // 
+            // radioTakbeer
+            // 
+            radioTakbeer.AutoSize = true;
+            radioTakbeer.Cursor = Cursors.Hand;
+            radioTakbeer.Location = new Point(115, 20);
+            radioTakbeer.Name = "radioTakbeer";
+            radioTakbeer.Size = new Size(94, 19);
+            radioTakbeer.TabIndex = 1;
+            radioTakbeer.Text = "Only Takbeer";
+            ToolTipHelp.SetToolTip(radioTakbeer, "Select the sound for the notification");
+            radioTakbeer.UseVisualStyleBackColor = true;
+            // 
+            // radioFull
+            // 
+            radioFull.AutoSize = true;
+            radioFull.Checked = true;
+            radioFull.Cursor = Cursors.Hand;
+            radioFull.Location = new Point(3, 20);
+            radioFull.Name = "radioFull";
+            radioFull.Size = new Size(82, 19);
+            radioFull.TabIndex = 0;
+            radioFull.TabStop = true;
+            radioFull.Text = "Full Adhan";
+            ToolTipHelp.SetToolTip(radioFull, "Select the sound for the notification");
+            radioFull.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.FlatStyle = FlatStyle.Flat;
-            label1.Location = new Point(6, 29);
+            label1.Location = new Point(6, 19);
             label1.MaximumSize = new Size(250, 0);
             label1.Name = "label1";
             label1.Size = new Size(246, 30);
@@ -444,21 +498,24 @@
             // 
             panel4.Controls.Add(ddl_method);
             panel4.Controls.Add(label4);
-            panel4.Location = new Point(8, 184);
+            panel4.Location = new Point(8, 172);
             panel4.Margin = new Padding(5, 0, 5, 0);
             panel4.Name = "panel4";
             panel4.Padding = new Padding(0, 0, 10, 10);
             panel4.Size = new Size(219, 57);
-            panel4.TabIndex = 4;
+            panel4.TabIndex = 3;
             // 
             // ddl_method
             // 
+            ddl_method.AutoCompleteMode = AutoCompleteMode.Append;
+            ddl_method.AutoCompleteSource = AutoCompleteSource.ListItems;
             ddl_method.Dock = DockStyle.Bottom;
             ddl_method.FormattingEnabled = true;
             ddl_method.Location = new Point(0, 24);
             ddl_method.Name = "ddl_method";
             ddl_method.Size = new Size(209, 23);
-            ddl_method.TabIndex = 1;
+            ddl_method.TabIndex = 0;
+            ToolTipHelp.SetToolTip(ddl_method, "This is to calculate the prayer times.\r\nSelect the method used by your country,\r\nor Auto to get the method from our database.");
             // 
             // label4
             // 
@@ -473,10 +530,10 @@
             // 
             // btn_save
             // 
-            btn_save.Location = new Point(6, 244);
+            btn_save.Location = new Point(6, 280);
             btn_save.Name = "btn_save";
             btn_save.Size = new Size(79, 28);
-            btn_save.TabIndex = 5;
+            btn_save.TabIndex = 6;
             btn_save.Text = "Save";
             btn_save.UseVisualStyleBackColor = true;
             btn_save.Click += btn_save_Click;
@@ -485,12 +542,12 @@
             // 
             panel3.Controls.Add(ddl_city);
             panel3.Controls.Add(label3);
-            panel3.Location = new Point(8, 127);
+            panel3.Location = new Point(8, 115);
             panel3.Margin = new Padding(5, 0, 5, 0);
             panel3.Name = "panel3";
             panel3.Padding = new Padding(0, 0, 10, 10);
             panel3.Size = new Size(219, 57);
-            panel3.TabIndex = 4;
+            panel3.TabIndex = 2;
             // 
             // ddl_city
             // 
@@ -498,11 +555,11 @@
             ddl_city.AutoCompleteSource = AutoCompleteSource.ListItems;
             ddl_city.Dock = DockStyle.Bottom;
             ddl_city.FormattingEnabled = true;
-            ddl_city.Items.AddRange(new object[] { "Ottawa", "Riyadh" });
+            ddl_city.Items.AddRange(new object[] { "Select a Country to see the cities" });
             ddl_city.Location = new Point(0, 24);
             ddl_city.Name = "ddl_city";
             ddl_city.Size = new Size(209, 23);
-            ddl_city.TabIndex = 1;
+            ddl_city.TabIndex = 0;
             // 
             // label3
             // 
@@ -519,12 +576,12 @@
             // 
             panel2.Controls.Add(ddl_country);
             panel2.Controls.Add(label2);
-            panel2.Location = new Point(8, 70);
+            panel2.Location = new Point(8, 58);
             panel2.Margin = new Padding(5, 0, 5, 0);
             panel2.Name = "panel2";
             panel2.Padding = new Padding(0, 0, 10, 10);
             panel2.Size = new Size(219, 57);
-            panel2.TabIndex = 3;
+            panel2.TabIndex = 1;
             // 
             // ddl_country
             // 
@@ -536,7 +593,8 @@
             ddl_country.Location = new Point(0, 24);
             ddl_country.Name = "ddl_country";
             ddl_country.Size = new Size(209, 23);
-            ddl_country.TabIndex = 1;
+            ddl_country.TabIndex = 0;
+            ddl_country.SelectedValueChanged += ddl_country_SelectedValueChanged;
             // 
             // label2
             // 
@@ -548,6 +606,15 @@
             label2.Size = new Size(49, 15);
             label2.TabIndex = 0;
             label2.Text = "Country";
+            // 
+            // ToolTipHelp
+            // 
+            ToolTipHelp.AutoPopDelay = 6000;
+            ToolTipHelp.InitialDelay = 500;
+            ToolTipHelp.IsBalloon = true;
+            ToolTipHelp.ReshowDelay = 100;
+            ToolTipHelp.ToolTipIcon = ToolTipIcon.Info;
+            ToolTipHelp.ToolTipTitle = "Help";
             // 
             // Form1
             // 
@@ -579,6 +646,8 @@
             table_fetchedData.PerformLayout();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             panel4.ResumeLayout(false);
             panel4.PerformLayout();
             panel3.ResumeLayout(false);
@@ -592,7 +661,6 @@
         #endregion
         private StatusStrip statusStrip1;
         private ToolStripProgressBar statusProgressBar;
-        private ToolStripStatusLabel statusLabel;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem resetSettingsToolStripMenuItem;
         private ToolStripMenuItem exitToolStripMenuItem;
@@ -630,5 +698,11 @@
         private Label lbl_isha;
         private Label res_location;
         private Label label5;
+        private Panel panel1;
+        private RadioButton radioTakbeer;
+        private RadioButton radioFull;
+        private Label label6;
+        private ToolTip ToolTipHelp;
+        private ToolStripStatusLabel statusLabel;
     }
 }
