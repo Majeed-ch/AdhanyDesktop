@@ -258,8 +258,9 @@ namespace AdhanyDesktop
 
 
                 statusProgressBar.Value = 100;
-                statusLabel.Text = "Done";
-                MessageBox.Show("Prayer times fetched successfully");
+                statusLabel.Text = "Done, you can minimize the app now.";
+                MessageBox.Show("Prayer times fetched successfully\n\n" +
+                    "You can minimize the app, and it will notify you when it's time for prayer.", "Success");
                 // start the timer with 59 seconds interval
                 timer.Change(TimeSpan.Zero, TimeSpan.FromSeconds(59));
             }
@@ -333,7 +334,6 @@ namespace AdhanyDesktop
 
             if (result == DialogResult.Yes)
             {
-                // will need to stop playing the adhan sound
                 SoundPlayer.Stop();
                 NotifyIcon.Visible = false;
             }
