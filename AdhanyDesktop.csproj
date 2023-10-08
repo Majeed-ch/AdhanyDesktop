@@ -11,11 +11,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-	  <Content Include="bin\Debug\net7.0-windows\icon\pray.ico" />
-	  <Content Include="bin\Debug\net7.0-windows\icon\call.ico" />
-	  <Content Include="bin\Debug\net7.0-windows\Audio\Adhan_Al_Deghreri.wav" />
-	  <Content Include="bin\Debug\net7.0-windows\Audio\Takbeer_Mishari.wav" />
-	  <Content Include="bin\Debug\net7.0-windows\cities.json" />
+	  <Content Include="icon\pray.ico" />
+	  <Content Include="icon\call.ico" />
+	  <Content Include="Audio\Adhan_Al_Deghreri.wav" />
+	  <Content Include="Audio\Takbeer_Mishari.wav" />
+	  <Content Include="cities.json" />
   </ItemGroup>
 
   <ItemGroup>
