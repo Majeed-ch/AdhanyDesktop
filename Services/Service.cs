@@ -1,9 +1,7 @@
 ﻿using AdhanyDesktop.Model;
-using System;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
-using static AdhanyDesktop.Model.PrayerTimesAPI;
 
 namespace AdhanyDesktop.Services
 {
