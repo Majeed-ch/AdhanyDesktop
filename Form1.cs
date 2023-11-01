@@ -293,12 +293,28 @@ namespace AdhanyDesktop
             res_location.Text = prayerTimes.Location.City + ", " + prayerTimes.Location.Country;
             res_date.Text = prayerTimes.Data.Date.gregorian.date;
             res_hijri.Text = prayerTimes.Data.Date.hijri.date;
-            res_fajr.Text = prayerTimes.Data.Timings.Fajr;
-            res_sunrise.Text = prayerTimes.Data.Timings.Sunrise;
-            res_dhuhr.Text = prayerTimes.Data.Timings.Dhuhr;
-            res_asir.Text = prayerTimes.Data.Timings.Asr;
-            res_maghrib.Text = prayerTimes.Data.Timings.Maghrib;
-            res_isha.Text = prayerTimes.Data.Timings.Isha;
+
+            try
+            {
+                // Displaying times in 12-hour format
+                res_fajr.Text = DateTime.Parse(prayerTimes.Data.Timings.Fajr).ToString("hh:mm tt");
+                res_sunrise.Text = DateTime.Parse(prayerTimes.Data.Timings.Sunrise).ToString("hh:mm tt");
+                res_dhuhr.Text = DateTime.Parse(prayerTimes.Data.Timings.Dhuhr).ToString("hh:mm tt");
+                res_asir.Text = DateTime.Parse(prayerTimes.Data.Timings.Asr).ToString("hh:mm tt");
+                res_maghrib.Text = DateTime.Parse(prayerTimes.Data.Timings.Maghrib).ToString("hh:mm tt");
+                res_isha.Text = DateTime.Parse(prayerTimes.Data.Timings.Isha).ToString("hh:mm tt");
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("An error occurred while parsing the time. Please ensure the time is in a valid 24-hour format.");
+                // Displaying times in 24-hour format if the parsing failed
+                res_fajr.Text = prayerTimes.Data.Timings.Fajr;
+                res_sunrise.Text = prayerTimes.Data.Timings.Sunrise;
+                res_dhuhr.Text = prayerTimes.Data.Timings.Dhuhr;
+                res_asir.Text = prayerTimes.Data.Timings.Asr;
+                res_maghrib.Text = prayerTimes.Data.Timings.Maghrib;
+                res_isha.Text = prayerTimes.Data.Timings.Isha;
+            }
 
             table_fetchedData.Visible = true;
         }
