@@ -34,10 +34,12 @@ namespace AdhanyDesktop
             if (Properties.Settings.Default.AdhanType == "full")
             {
                 radioFull.Checked = true;
+                Properties.Settings.Default.AdhanDurationSeconds = 190; // 3:10 minutes
             }
             else
             {
                 radioTakbeer.Checked = true;
+                Properties.Settings.Default.AdhanDurationSeconds = 22;
             }
         }
 
@@ -76,7 +78,8 @@ namespace AdhanyDesktop
             {
                 if (time.Value == currentTime)
                 {
-                    ShowNotification(time.Key);
+                    int adhanDurationMs = Properties.Settings.Default.AdhanDurationSeconds * 1000;
+                    ShowNotification(time.Key, adhanDurationMs);
                     LoadSoundAsync();
                     break;
                 }
@@ -102,7 +105,7 @@ namespace AdhanyDesktop
         /// This is called to show a notification with the prayer name
         /// </summary>
         /// <param name="prayerName"></param>
-        private void ShowNotification(string prayerName)
+        private void ShowNotification(string prayerName, int adhanDurationMs)
         {
             NotifyIcon.Icon = new Icon(@"icon\call.ico");
             NotifyIcon.Text = "Click to stop the Adhan";
@@ -111,6 +114,10 @@ namespace AdhanyDesktop
             NotifyIcon.BalloonTipIcon = ToolTipIcon.None;
             NotifyIcon.Visible = true;
             NotifyIcon.ShowBalloonTip(2000);
+            // hide the tray icon after the adhan duration
+            if (adhanDurationMs > 0)
+                Task.Delay(adhanDurationMs).ContinueWith(t => NotifyIcon.Visible = false);
+
         }
 
         private void SoundPlayer_LoadCompleted(object? sender, AsyncCompletedEventArgs e)
@@ -233,6 +240,7 @@ namespace AdhanyDesktop
                 City city = (City)ddl_city.SelectedItem;
                 var method = (CalculationMethod)ddl_method.SelectedItem;
                 var adhanType = radioFull.Checked ? "full" : "short";
+                var adhanDuration = radioFull.Checked ? 190 : 22;
 
                 statusProgressBar.Value = 25;
                 // Save the settings
@@ -240,6 +248,7 @@ namespace AdhanyDesktop
                 Properties.Settings.Default.City = city.name;
                 Properties.Settings.Default.Method = method.id;
                 Properties.Settings.Default.AdhanType = adhanType;
+                Properties.Settings.Default.AdhanDurationSeconds = adhanDuration;
                 Properties.Settings.Default.Save();
 
                 statusProgressBar.Value = 50;
@@ -284,12 +293,28 @@ namespace AdhanyDesktop
             res_location.Text = prayerTimes.Location.City + ", " + prayerTimes.Location.Country;
             res_date.Text = prayerTimes.Data.Date.gregorian.date;
             res_hijri.Text = prayerTimes.Data.Date.hijri.date;
-            res_fajr.Text = prayerTimes.Data.Timings.Fajr;
-            res_sunrise.Text = prayerTimes.Data.Timings.Sunrise;
-            res_dhuhr.Text = prayerTimes.Data.Timings.Dhuhr;
-            res_asir.Text = prayerTimes.Data.Timings.Asr;
-            res_maghrib.Text = prayerTimes.Data.Timings.Maghrib;
-            res_isha.Text = prayerTimes.Data.Timings.Isha;
+
+            try
+            {
+                // Displaying times in 12-hour format
+                res_fajr.Text = DateTime.Parse(prayerTimes.Data.Timings.Fajr).ToString("hh:mm tt");
+                res_sunrise.Text = DateTime.Parse(prayerTimes.Data.Timings.Sunrise).ToString("hh:mm tt");
+                res_dhuhr.Text = DateTime.Parse(prayerTimes.Data.Timings.Dhuhr).ToString("hh:mm tt");
+                res_asir.Text = DateTime.Parse(prayerTimes.Data.Timings.Asr).ToString("hh:mm tt");
+                res_maghrib.Text = DateTime.Parse(prayerTimes.Data.Timings.Maghrib).ToString("hh:mm tt");
+                res_isha.Text = DateTime.Parse(prayerTimes.Data.Timings.Isha).ToString("hh:mm tt");
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("An error occurred while parsing the time. Please ensure the time is in a valid 24-hour format.");
+                // Displaying times in 24-hour format if the parsing failed
+                res_fajr.Text = prayerTimes.Data.Timings.Fajr;
+                res_sunrise.Text = prayerTimes.Data.Timings.Sunrise;
+                res_dhuhr.Text = prayerTimes.Data.Timings.Dhuhr;
+                res_asir.Text = prayerTimes.Data.Timings.Asr;
+                res_maghrib.Text = prayerTimes.Data.Timings.Maghrib;
+                res_isha.Text = prayerTimes.Data.Timings.Isha;
+            }
 
             table_fetchedData.Visible = true;
         }
@@ -378,6 +403,13 @@ namespace AdhanyDesktop
                         ddl_city.SelectedItem = savedCity;
                 }
             }
+        }
+
+        private void showTrayIconMenuItem_Click(object sender, EventArgs e)
+        {
+            Show();
+            this.WindowState = FormWindowState.Normal;
+            TrayIcon.Visible = false;
         }
     }
 }

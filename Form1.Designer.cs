@@ -38,6 +38,9 @@
             exitToolStripMenuItem = new ToolStripMenuItem();
             NotifyIcon = new NotifyIcon(components);
             TrayIcon = new NotifyIcon(components);
+            trayIconMenu = new ContextMenuStrip(components);
+            showTrayIconMenuItem = new ToolStripMenuItem();
+            exitTrayIconMenuItem = new ToolStripMenuItem();
             groupBox2 = new GroupBox();
             table_fetchedData = new TableLayoutPanel();
             res_isha = new Label();
@@ -77,6 +80,7 @@
             ToolTipHelp = new ToolTip(components);
             statusStrip1.SuspendLayout();
             menuStrip1.SuspendLayout();
+            trayIconMenu.SuspendLayout();
             groupBox2.SuspendLayout();
             table_fetchedData.SuspendLayout();
             groupBox1.SuspendLayout();
@@ -139,11 +143,32 @@
             // 
             // TrayIcon
             // 
-            TrayIcon.BalloonTipText = "The app is minimized and working in the background,\r\nDuble click to open";
+            TrayIcon.BalloonTipText = "The app is minimized to the icons tray and working in the background";
             TrayIcon.BalloonTipTitle = "Runing in background";
+            TrayIcon.ContextMenuStrip = trayIconMenu;
             TrayIcon.Icon = (Icon)resources.GetObject("TrayIcon.Icon");
             TrayIcon.Text = "Adhany Desktop";
             TrayIcon.MouseDoubleClick += TrayIcon_MouseDoubleClick;
+            // 
+            // trayIconMenu
+            // 
+            trayIconMenu.Items.AddRange(new ToolStripItem[] { showTrayIconMenuItem, exitTrayIconMenuItem });
+            trayIconMenu.Name = "trayIconMenu";
+            trayIconMenu.Size = new Size(104, 48);
+            // 
+            // showTrayIconMenuItem
+            // 
+            showTrayIconMenuItem.Name = "showTrayIconMenuItem";
+            showTrayIconMenuItem.Size = new Size(103, 22);
+            showTrayIconMenuItem.Text = "Show";
+            showTrayIconMenuItem.Click += showTrayIconMenuItem_Click;
+            // 
+            // exitTrayIconMenuItem
+            // 
+            exitTrayIconMenuItem.Name = "exitTrayIconMenuItem";
+            exitTrayIconMenuItem.Size = new Size(103, 22);
+            exitTrayIconMenuItem.Text = "Exit";
+            exitTrayIconMenuItem.Click += exitToolStripMenuItem_Click;
             // 
             // groupBox2
             // 
@@ -640,6 +665,7 @@
             statusStrip1.PerformLayout();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
+            trayIconMenu.ResumeLayout(false);
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
             table_fetchedData.ResumeLayout(false);
@@ -704,5 +730,8 @@
         private Label label6;
         private ToolTip ToolTipHelp;
         private ToolStripStatusLabel statusLabel;
+        private ContextMenuStrip trayIconMenu;
+        private ToolStripMenuItem exitTrayIconMenuItem;
+        private ToolStripMenuItem showTrayIconMenuItem;
     }
 }
