@@ -388,5 +388,12 @@ namespace AdhanyDesktop
                 }
             }
         }
+
+        private void showTrayIconMenuItem_Click(object sender, EventArgs e)
+        {
+            Show();
+            this.WindowState = FormWindowState.Normal;
+            TrayIcon.Visible = false;
+        }
     }
 }
