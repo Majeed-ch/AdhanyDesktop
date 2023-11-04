@@ -107,16 +107,10 @@ namespace AdhanyDesktop
         /// <param name="prayerName"></param>
         private void ShowNotification(string prayerName, int adhanDurationMs)
         {
-            NotifyIcon.Text = "Click to stop the Adhan";
-            NotifyIcon.BalloonTipText = $"It's {prayerName} time";
-            NotifyIcon.BalloonTipTitle = "Adhan";
-            NotifyIcon.BalloonTipIcon = ToolTipIcon.None;
-            NotifyIcon.Visible = true;
-            NotifyIcon.ShowBalloonTip(2000);
-            // hide the tray icon after the adhan duration
-            if (adhanDurationMs > 0)
-                Task.Delay(adhanDurationMs).ContinueWith(t => NotifyIcon.Visible = false);
-
+            TrayIcon.BalloonTipTitle = $"It's {prayerName} time";
+            TrayIcon.BalloonTipText = "click the icon to dismiss the Adhan";
+            TrayIcon.Visible = true;
+            TrayIcon.ShowBalloonTip(2000);
         }
 
         private void SoundPlayer_LoadCompleted(object? sender, AsyncCompletedEventArgs e)
@@ -340,11 +334,6 @@ namespace AdhanyDesktop
             this.Close();
         }
 
-        private void NotifyIcon_BalloonTipClicked(object sender, EventArgs e)
-        {
-            StopAdhanMessageBox();
-        }
-
         private void StopAdhanMessageBox()
         {
             string message = "Do you want to stop the Adhan?";
@@ -359,7 +348,10 @@ namespace AdhanyDesktop
             if (result == DialogResult.Yes)
             {
                 SoundPlayer.Stop();
-                NotifyIcon.Visible = false;
+                if (this.WindowState is not FormWindowState.Minimized)
+                {
+                    TrayIcon.Visible = false;
+                }
             }
         }
 
@@ -371,6 +363,8 @@ namespace AdhanyDesktop
             if (this.WindowState == FormWindowState.Minimized)
             {
                 Hide();
+                TrayIcon.BalloonTipTitle = "Running in background";
+                TrayIcon.BalloonTipText = "The app is minimized to the icons tray and working in the background";
                 TrayIcon.Visible = true;
                 // the timeout parameter is deprecated (has no affect)
                 // but still needs to be passed
@@ -383,11 +377,6 @@ namespace AdhanyDesktop
             Show();
             this.WindowState = FormWindowState.Normal;
             TrayIcon.Visible = false;
-        }
-
-        private void NotifyIcon_Click(object sender, EventArgs e)
-        {
-            StopAdhanMessageBox();
         }
 
         private void ddl_country_SelectedValueChanged(object sender, EventArgs e)
@@ -409,6 +398,14 @@ namespace AdhanyDesktop
             Show();
             this.WindowState = FormWindowState.Normal;
             TrayIcon.Visible = false;
+        }
+
+        private void TrayIcon_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                StopAdhanMessageBox();
+            }
         }
     }
 }

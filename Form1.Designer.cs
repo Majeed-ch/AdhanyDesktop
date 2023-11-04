@@ -36,7 +36,6 @@
             menuStrip1 = new MenuStrip();
             resetSettingsToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
-            NotifyIcon = new NotifyIcon(components);
             TrayIcon = new NotifyIcon(components);
             trayIconMenu = new ContextMenuStrip(components);
             showTrayIconMenuItem = new ToolStripMenuItem();
@@ -135,38 +134,33 @@
             exitToolStripMenuItem.Text = "E&xit";
             exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
             // 
-            // NotifyIcon
-            // 
-            NotifyIcon.Icon = (Icon)resources.GetObject("NotifyIcon.Icon");
-            NotifyIcon.BalloonTipClicked += NotifyIcon_BalloonTipClicked;
-            NotifyIcon.Click += NotifyIcon_Click;
-            // 
             // TrayIcon
             // 
             TrayIcon.BalloonTipText = "The app is minimized to the icons tray and working in the background";
-            TrayIcon.BalloonTipTitle = "Runing in background";
+            TrayIcon.BalloonTipTitle = "Running in background";
             TrayIcon.ContextMenuStrip = trayIconMenu;
             TrayIcon.Icon = (Icon)resources.GetObject("TrayIcon.Icon");
             TrayIcon.Text = "Adhany Desktop";
+            TrayIcon.MouseClick += TrayIcon_MouseClick;
             TrayIcon.MouseDoubleClick += TrayIcon_MouseDoubleClick;
             // 
             // trayIconMenu
             // 
             trayIconMenu.Items.AddRange(new ToolStripItem[] { showTrayIconMenuItem, exitTrayIconMenuItem });
             trayIconMenu.Name = "trayIconMenu";
-            trayIconMenu.Size = new Size(104, 48);
+            trayIconMenu.Size = new Size(181, 70);
             // 
             // showTrayIconMenuItem
             // 
             showTrayIconMenuItem.Name = "showTrayIconMenuItem";
-            showTrayIconMenuItem.Size = new Size(103, 22);
+            showTrayIconMenuItem.Size = new Size(180, 22);
             showTrayIconMenuItem.Text = "Show";
             showTrayIconMenuItem.Click += showTrayIconMenuItem_Click;
             // 
             // exitTrayIconMenuItem
             // 
             exitTrayIconMenuItem.Name = "exitTrayIconMenuItem";
-            exitTrayIconMenuItem.Size = new Size(103, 22);
+            exitTrayIconMenuItem.Size = new Size(180, 22);
             exitTrayIconMenuItem.Text = "Exit";
             exitTrayIconMenuItem.Click += exitToolStripMenuItem_Click;
             // 
@@ -690,7 +684,6 @@
         private MenuStrip menuStrip1;
         private ToolStripMenuItem resetSettingsToolStripMenuItem;
         private ToolStripMenuItem exitToolStripMenuItem;
-        private NotifyIcon NotifyIcon;
         private NotifyIcon TrayIcon;
         private GroupBox groupBox2;
         private GroupBox groupBox1;
