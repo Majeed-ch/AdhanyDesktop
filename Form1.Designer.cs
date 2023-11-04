@@ -137,7 +137,7 @@
             // 
             // NotifyIcon
             // 
-            NotifyIcon.Visible = true;
+            NotifyIcon.Icon = (Icon)resources.GetObject("NotifyIcon.Icon");
             NotifyIcon.BalloonTipClicked += NotifyIcon_BalloonTipClicked;
             NotifyIcon.Click += NotifyIcon_Click;
             // 

@@ -107,7 +107,6 @@ namespace AdhanyDesktop
         /// <param name="prayerName"></param>
         private void ShowNotification(string prayerName, int adhanDurationMs)
         {
-            NotifyIcon.Icon = new Icon(@"icon\call.ico");
             NotifyIcon.Text = "Click to stop the Adhan";
             NotifyIcon.BalloonTipText = $"It's {prayerName} time";
             NotifyIcon.BalloonTipTitle = "Adhan";
