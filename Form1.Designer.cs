@@ -36,7 +36,6 @@
             menuStrip1 = new MenuStrip();
             resetSettingsToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
-            NotifyIcon = new NotifyIcon(components);
             TrayIcon = new NotifyIcon(components);
             trayIconMenu = new ContextMenuStrip(components);
             showTrayIconMenuItem = new ToolStripMenuItem();
@@ -135,19 +134,14 @@
             exitToolStripMenuItem.Text = "E&xit";
             exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
             // 
-            // NotifyIcon
-            // 
-            NotifyIcon.Visible = true;
-            NotifyIcon.BalloonTipClicked += NotifyIcon_BalloonTipClicked;
-            NotifyIcon.Click += NotifyIcon_Click;
-            // 
             // TrayIcon
             // 
             TrayIcon.BalloonTipText = "The app is minimized to the icons tray and working in the background";
-            TrayIcon.BalloonTipTitle = "Runing in background";
+            TrayIcon.BalloonTipTitle = "Running in background";
             TrayIcon.ContextMenuStrip = trayIconMenu;
             TrayIcon.Icon = (Icon)resources.GetObject("TrayIcon.Icon");
             TrayIcon.Text = "Adhany Desktop";
+            TrayIcon.MouseClick += TrayIcon_MouseClick;
             TrayIcon.MouseDoubleClick += TrayIcon_MouseDoubleClick;
             // 
             // trayIconMenu
@@ -690,7 +684,6 @@
         private MenuStrip menuStrip1;
         private ToolStripMenuItem resetSettingsToolStripMenuItem;
         private ToolStripMenuItem exitToolStripMenuItem;
-        private NotifyIcon NotifyIcon;
         private NotifyIcon TrayIcon;
         private GroupBox groupBox2;
         private GroupBox groupBox1;

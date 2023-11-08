@@ -7,15 +7,25 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <StartupObject>AdhanyDesktop.Program</StartupObject>
-    <ApplicationIcon>bin\Debug\net7.0-windows\icon\pray.ico</ApplicationIcon>
+    <ApplicationIcon>Icon\pray.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-	  <Content Include="icon\pray.ico" />
-	  <Content Include="icon\call.ico" />
-	  <Content Include="Audio\Adhan_Al_Deghreri.wav" />
-	  <Content Include="Audio\Takbeer_Mishari.wav" />
-	  <Content Include="cities.json" />
+	  <Content Include="Icon\pray.ico">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	  <Content Include="icon\call.ico">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	  <Content Include="Audio\Adhan_Al_Deghreri.wav">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	  <Content Include="Audio\Takbeer_Mishari.wav">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	  <Content Include="cities.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
   </ItemGroup>
 
   <ItemGroup>
