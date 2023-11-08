@@ -148,19 +148,19 @@
             // 
             trayIconMenu.Items.AddRange(new ToolStripItem[] { showTrayIconMenuItem, exitTrayIconMenuItem });
             trayIconMenu.Name = "trayIconMenu";
-            trayIconMenu.Size = new Size(181, 70);
+            trayIconMenu.Size = new Size(104, 48);
             // 
             // showTrayIconMenuItem
             // 
             showTrayIconMenuItem.Name = "showTrayIconMenuItem";
-            showTrayIconMenuItem.Size = new Size(180, 22);
+            showTrayIconMenuItem.Size = new Size(103, 22);
             showTrayIconMenuItem.Text = "Show";
             showTrayIconMenuItem.Click += showTrayIconMenuItem_Click;
             // 
             // exitTrayIconMenuItem
             // 
             exitTrayIconMenuItem.Name = "exitTrayIconMenuItem";
-            exitTrayIconMenuItem.Size = new Size(180, 22);
+            exitTrayIconMenuItem.Size = new Size(103, 22);
             exitTrayIconMenuItem.Text = "Exit";
             exitTrayIconMenuItem.Click += exitToolStripMenuItem_Click;
             // 
