@@ -7,7 +7,7 @@ using Timer = System.Threading.Timer;
 
 namespace AdhanyDesktop
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
 
         private readonly Service _service;
@@ -18,7 +18,7 @@ namespace AdhanyDesktop
         private bool isAdhanPlaying = false;
         private int adhanDurationMs = 0;
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
 
