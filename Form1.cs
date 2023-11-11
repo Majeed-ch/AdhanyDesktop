@@ -10,7 +10,7 @@ namespace AdhanyDesktop
     public partial class MainForm : Form
     {
 
-        private readonly Service _service;
+        private readonly PrayerTImesService _service;
         private readonly Timer timer;
         private Timer adhanTimer;
         private PrayerTimesAPI prayerTimes;
@@ -22,7 +22,7 @@ namespace AdhanyDesktop
         {
             InitializeComponent();
 
-            _service = new Service(new HttpClient());
+            _service = new PrayerTImesService(new HttpClient());
             SoundPlayer.LoadCompleted += new AsyncCompletedEventHandler(SoundPlayer_LoadCompleted);
 
             // Create a timer that will call the NotifyPrayerTime but don't start it yet
@@ -339,7 +339,7 @@ namespace AdhanyDesktop
             ddl_method.SelectedIndex = 0;
             statusLabel.Text = "";
             statusProgressBar.Value = 0;
-            Service.DeleteLocalFile();
+            PrayerTImesService.DeleteLocalFile();
             prayerTimes = null;
             timer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
 

@@ -5,12 +5,12 @@ using System.Text.Json;
 
 namespace AdhanyDesktop.Services
 {
-    public class Service
+    public class PrayerTImesService
     {
         private static HttpClient httpClient;
         private static string timingsUri = "http://api.aladhan.com/v1/timingsByCity";
 
-        public Service(HttpClient client)
+        public PrayerTImesService(HttpClient client)
         {
             httpClient = client;
             httpClient.BaseAddress = new Uri("http://api.aladhan.com/v1/");
