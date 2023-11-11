@@ -55,6 +55,7 @@ namespace AdhanyDesktop
         {
             BindMethodBox();
             LoadFromSettings();
+            AppSettingsService.SetRunOnStartup(true);
         }
 
         /// <summary>
